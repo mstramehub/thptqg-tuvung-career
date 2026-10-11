@@ -1,493 +1,276 @@
-<!doctype html>
-<html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Career Paths Vocabulary</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Be+Vietnam+Pro:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
-<style>
-/* Layout: a study desk — header with a "career ladder" progress meter, passage filter chips, four study modes in one column */
-:root{
-  --bg:#F3F6F8; --surface:#FFFFFF; --sunk:#E6ECF1; --ink:#13243A; --muted:#5A6878; --line:#D2DCE5;
-  --accent:#1569A8; --accent-ink:#FFFFFF; --hi:#F2B54A; --hi-soft:#FCEBC8;
-  --good:#2C7A4B; --good-soft:#DDF0E3; --bad:#B9402B; --bad-soft:#F8E0DA;
-  --display:"Bricolage Grotesque","Be Vietnam Pro",system-ui,sans-serif;
-  --body:"Be Vietnam Pro",system-ui,-apple-system,"Segoe UI",sans-serif;
-  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
-  --r:14px;
-}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#0D1520; --surface:#15212E; --sunk:#1C2A38; --ink:#E3ECF4; --muted:#93A4B5; --line:#2A3A4A;
-  --accent:#5DB4EC; --accent-ink:#0A1824; --hi:#F0BA5C; --hi-soft:#3A2F1A;
-  --good:#6CC892; --good-soft:#1B3527; --bad:#EE8A75; --bad-soft:#3D2420; color-scheme:dark}}
-:root[data-theme="dark"]{
-  --bg:#0D1520; --surface:#15212E; --sunk:#1C2A38; --ink:#E3ECF4; --muted:#93A4B5; --line:#2A3A4A;
-  --accent:#5DB4EC; --accent-ink:#0A1824; --hi:#F0BA5C; --hi-soft:#3A2F1A;
-  --good:#6CC892; --good-soft:#1B3527; --bad:#EE8A75; --bad-soft:#3D2420; color-scheme:dark}
-*{box-sizing:border-box}
-body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55}
-.wrap{max-width:880px;margin:0 auto;padding-inline:16px;padding-block:28px 56px;display:flex;flex-direction:column;gap:22px}
-h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0}
-.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-header{display:grid;gap:14px}
-header h1{font-size:clamp(30px,6vw,46px);font-weight:800;line-height:1.05;letter-spacing:-.02em}
-header h1 span{color:var(--accent)}
-.sub{color:var(--muted);max-width:62ch;margin:0}
-.ladder{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-.rungs{display:flex;gap:3px;flex:1;min-width:200px}
-.rung{flex:1;height:14px;border-radius:3px;background:var(--sunk);border:1px solid var(--line);transition:background .3s}
-.rung.on{background:var(--accent);border-color:var(--accent)}
-.ladder-label{font-family:var(--mono);font-size:13px;font-variant-numeric:tabular-nums;color:var(--muted);white-space:nowrap}
-.ladder-label b{color:var(--ink)}
-.controls{display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;align-items:center}
-.chips,.tabs{display:flex;flex-wrap:wrap;gap:6px}
-.chip{font:500 13px var(--body);padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
-.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
-.tabs{background:var(--sunk);padding:4px;border-radius:12px}
-.tab{font:600 14px var(--body);padding:8px 14px;border:0;border-radius:9px;background:transparent;color:var(--muted);cursor:pointer}
-.tab[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgb(0 0 0 / .12)}
-button:focus-visible,input:focus-visible,.card:focus-visible{outline:3px solid var(--hi);outline-offset:2px}
-.panel{display:flex;flex-direction:column;gap:16px}
-.btn{font:600 14px var(--body);padding:10px 16px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
-.btn:hover{border-color:var(--accent)}
-.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
-.btn.known{background:var(--good-soft);border-color:var(--good);color:var(--good)}
-.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-.row.center{justify-content:center}
-.tag{font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;padding:2px 8px;border-radius:6px;background:var(--sunk);color:var(--muted)}
-.ipa{font-family:var(--mono);color:var(--muted);font-size:14px}
-mark{background:var(--hi-soft);color:var(--ink);padding:0 3px;border-radius:4px;font-weight:600;box-shadow:inset 0 -2px 0 var(--hi)}
-/* flashcard */
-.stage{perspective:1200px}
-.card{position:relative;height:300px;cursor:pointer;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.2,.7,.2,1)}
-.card.flip{transform:rotateY(180deg)}
-.face{position:absolute;inset:0;backface-visibility:hidden;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:24px;display:flex;flex-direction:column;gap:10px;overflow:auto}
-.face.back{transform:rotateY(180deg)}
-.front{justify-content:center;align-items:center;text-align:center}
-.front .word{font-family:var(--display);font-weight:800;font-size:clamp(34px,8vw,56px);letter-spacing:-.02em;line-height:1.05}
-.hint{position:absolute;bottom:12px;left:0;right:0;text-align:center;font-size:12px;color:var(--muted)}
-.back .vi{font-family:var(--display);font-size:24px;font-weight:700}
-.rel{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:14px}
-.rel b{font-family:var(--mono);font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:500;margin-right:4px}
-.ex{border-left:3px solid var(--hi);padding-left:12px;margin:4px 0 0;font-style:italic}
-.counter{font-family:var(--mono);font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
-/* quiz */
-.q{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:22px;display:flex;flex-direction:column;gap:14px}
-.q-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
-.bar{height:6px;background:var(--sunk);border-radius:6px;overflow:hidden}
-.bar i{display:block;height:100%;background:var(--accent);transition:width .3s}
-.prompt{font-family:var(--display);font-size:22px;font-weight:700;line-height:1.3}
-.prompt.sent{font-family:var(--body);font-size:18px;font-weight:500;font-style:italic}
-.blank{display:inline-block;min-width:90px;border-bottom:2px solid var(--hi);text-align:center;font-style:normal;font-weight:700}
-.opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
-@media (max-width:560px){.opts{grid-template-columns:1fr}}
-.opt{text-align:left;font:500 15px var(--body);padding:12px 14px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer;display:flex;gap:10px;align-items:baseline}
-.opt .k{font-family:var(--mono);font-size:12px;color:var(--muted)}
-.opt:hover:not(:disabled){border-color:var(--accent)}
-.opt:disabled{cursor:default}
-.opt.right{background:var(--good-soft);border-color:var(--good)}
-.opt.wrong{background:var(--bad-soft);border-color:var(--bad)}
-.fb{padding:12px 14px;border-radius:10px;background:var(--sunk);font-size:14.5px}
-.fb strong.ok{color:var(--good)} .fb strong.no{color:var(--bad)}
-.score{text-align:center;display:flex;flex-direction:column;gap:10px;align-items:center}
-.score .big{font-family:var(--display);font-size:64px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
-.miss{text-align:left;width:100%;display:grid;gap:6px;margin:0;padding:0;list-style:none}
-.miss li{padding:8px 12px;border-radius:8px;background:var(--bad-soft);font-size:14px}
-/* list */
-.search{font:15px var(--body);padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);width:100%}
-.list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-@media (max-width:640px){.list{grid-template-columns:1fr}}
-.item{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:6px;min-width:0}
-.item.is-known{border-color:var(--good)}
-.item-h{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
-.item-h h3{font-size:20px;font-weight:700}
-.item .vi{font-weight:600}
-.tick{font:600 12px var(--body);padding:4px 10px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--muted);cursor:pointer;white-space:nowrap}
-.tick[aria-pressed="true"]{background:var(--good-soft);border-color:var(--good);color:var(--good)}
-.icon-btn{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:8px;padding:4px 8px;cursor:pointer;font:500 12px var(--mono)}
-.empty{color:var(--muted);text-align:center;padding:24px}
-footer{color:var(--muted);font-size:13px;text-align:center}
-.brand{display:flex;align-items:center;justify-content:space-between;gap:12px 20px;flex-wrap:wrap;padding-bottom:16px;border-bottom:2px solid var(--ink)}
-.brand-id{display:flex;align-items:center;gap:12px;color:var(--ink);text-decoration:none}
-.brand-id svg{width:58px;height:auto;flex:none}
-.brand-name{font-family:var(--display);font-weight:800;font-size:20px;line-height:1.1}
-.brand-tag{font-size:13px;color:var(--muted)}
-.hotline{display:flex;flex-direction:column;align-items:flex-end;gap:2px;font-size:13px;color:var(--muted)}
-.hotline a{font-family:var(--mono);font-weight:500;font-size:15px;color:var(--accent);text-decoration:none;font-variant-numeric:tabular-nums}
-.hotline a:hover{text-decoration:underline}
-@media (max-width:560px){.hotline{align-items:flex-start}}
+<!DOCTYPE html>
+<html lang="vi" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Career Paths Vocabulary · Ms Trâm English Hub</title>
+  <meta name="description" content="Ôn từ vựng trọng tâm từ các bài đọc thi THPTQG & ĐGNL Tiếng Anh theo từng chuyên đề.">
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
 
-.form{display:grid;gap:14px;max-width:440px}
-.field{display:grid;gap:5px}
-.field label{font-size:13px;font-weight:600;color:var(--muted)}
-.field input{font:15px var(--body);padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);width:100%}
-.err{color:var(--bad);font-size:13.5px;margin:0}
-.who{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;font-size:14px;color:var(--muted)}
-.who b{color:var(--ink)}
-.linkbtn{background:none;border:0;padding:0;color:var(--accent);font:600 13px var(--body);cursor:pointer;text-decoration:underline}
-.result{border:2px dashed var(--accent);border-radius:12px;padding:16px;text-align:left;width:100%;display:grid;gap:6px;background:var(--bg);font-size:14.5px}
-.code{font-family:var(--mono);font-size:12.5px;word-break:break-all;background:var(--sunk);padding:8px 10px;border-radius:8px}
-.msgbox{width:100%;min-height:150px;font:13px var(--mono);padding:10px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
-.paste{width:100%;min-height:170px;font:13.5px var(--body);padding:12px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
-.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
-table{border-collapse:collapse;width:100%;font-size:14px;font-variant-numeric:tabular-nums}
-th,td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
-th{font-family:var(--mono);font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:500;background:var(--sunk)}
-td.wrap{white-space:normal;min-width:180px}
-tr:last-child td{border-bottom:0}
-.pill{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px;font-weight:600}
-.pill.ok{background:var(--good-soft);color:var(--good)} .pill.no{background:var(--bad-soft);color:var(--bad)}
-.stats{display:flex;flex-wrap:wrap;gap:8px 20px;font-size:14px;color:var(--muted)}
-.stats b{color:var(--ink);font-family:var(--display);font-size:20px;margin-right:4px}
+  <!-- Cài đặt theme ban đầu không bị chớp màn hình (Mặc định: Tối) -->
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem("cpv-theme");
+        if (t) {
+          var parsed = JSON.parse(t);
+          if (parsed === "light") document.documentElement.setAttribute("data-theme", "light");
+          else document.documentElement.setAttribute("data-theme", "dark");
+        } else {
+          document.documentElement.setAttribute("data-theme", "dark");
+        }
+      } catch (e) {
+        document.documentElement.setAttribute("data-theme", "dark");
+      }
+    })();
+  </script>
 
-.ticket{width:100%;max-width:440px;margin:0 auto;background:var(--surface);border:2px solid var(--accent);border-radius:16px;overflow:hidden;text-align:left}
-.ticket-h{display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--sunk);border-bottom:1px solid var(--line)}
-.ticket-h svg{width:42px;height:auto;flex:none}
-.ticket-h .tn{font-family:var(--display);font-weight:800;font-size:16px;line-height:1.15}
-.ticket-h .tt{font-size:12px;color:var(--muted)}
-.ticket-b{padding:16px;display:grid;gap:12px}
-.t-name{font-family:var(--display);font-weight:800;font-size:22px;line-height:1.2}
-.t-class{color:var(--muted);font-size:14px}
-.t-score{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
-.t-score .big{font-family:var(--display);font-size:58px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums;color:var(--accent)}
-.t-score .pct{font-weight:600}
-.t-meta{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 12px;font-size:14px;margin:0}
-.t-meta dt{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding-top:3px}
-.t-meta dd{margin:0;font-variant-numeric:tabular-nums}
-.t-miss{display:flex;flex-wrap:wrap;gap:6px}
-.t-miss span{font-size:13px;padding:3px 9px;border-radius:999px;background:var(--bad-soft);color:var(--ink)}
-.t-ok{font-size:14px;color:var(--good);font-weight:600}
-.shot-tip{display:flex;gap:10px;align-items:center;max-width:440px;margin:0 auto;padding:10px 14px;border-radius:10px;background:var(--hi-soft);font-size:14px;font-weight:500}
-.contact{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px 20px;align-items:center}
-.contact svg{width:72px;height:auto}
-.contact dl{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 14px;font-size:14.5px}
-.contact dt{font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding-top:3px}
-.contact dd{margin:0}
-.contact a{color:var(--accent);font-weight:600;text-decoration:none}
-@media (max-width:480px){.contact{grid-template-columns:1fr}}
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Be+Vietnam+Pro:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
 
-@media (prefers-reduced-motion:reduce){*{transition:none!important}}
-</style>
-
-<div class="wrap">
-  <header>
-    <div class="brand">
-      <div class="brand-id"><svg viewBox="0 0 84 60" role="img" aria-label="Logo Ms Trâm English Hub"><g>
-<polygon points="30,7 41,18 30,29 19,18" fill="#0C3A5E"/><polygon points="18,19 29,30 18,41 7,30" fill="#1B5F93"/>
-<polygon points="30,31 41,42 30,53 19,42" fill="#1E78BC"/><polygon points="42,19 53,30 42,41 31,30" fill="#2D97DA"/>
-<polygon points="54,7 65,18 54,29 43,18" fill="#33A9EC"/><polygon points="66,19 77,30 66,41 55,30" fill="#7CC9F3"/>
-<polygon points="54,31 65,42 54,53 43,42" fill="#A6DBF7"/></g></svg>
-        <div><div class="brand-name">Ms Trâm English Hub</div><div class="brand-tag">Tiếng Anh cho mọi lứa tuổi</div></div>
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="wrap">
+    <!-- Header: Logo, Nút Theme, Âm thanh, Hotline, Tiêu đề, Đổi chủ đề & Nấc thang tiến độ -->
+    <header>
+      <div class="brand">
+        <a href="#" class="brand-id" aria-label="Trang chủ Ms Trâm English Hub">
+          <svg viewBox="0 0 84 60" role="img" aria-label="Logo Ms Trâm English Hub">
+            <g>
+              <polygon points="30,7 41,18 30,29 19,18" fill="#0C3A5E"/>
+              <polygon points="18,19 29,30 18,41 7,30" fill="#1B5F93"/>
+              <polygon points="30,31 41,42 30,53 19,42" fill="#1E78BC"/>
+              <polygon points="42,19 53,30 42,41 31,30" fill="#2D97DA"/>
+              <polygon points="54,7 65,18 54,29 43,18" fill="#33A9EC"/>
+              <polygon points="66,19 77,30 66,41 55,30" fill="#7CC9F3"/>
+              <polygon points="54,31 65,42 54,53 43,42" fill="#A6DBF7"/>
+            </g>
+          </svg>
+          <div>
+            <div class="brand-name">Ms Trâm English Hub</div>
+            <div class="brand-tag">Tiếng Anh cho mọi lứa tuổi</div>
+          </div>
+        </a>
+        <div class="header-right">
+          <div class="header-toggles">
+            <button class="icon-toggle-btn" id="themeToggle" type="button" aria-label="Chuyển sang giao diện sáng" title="Giao diện tối (Bấm để chuyển sang sáng)">🌙</button>
+            <button class="icon-toggle-btn" id="soundToggle" type="button" aria-label="Bật/Tắt âm thanh" title="Âm thanh hiệu ứng: Đang bật">🔊</button>
+          </div>
+          <div class="header-contacts">
+            <button class="contact-pill" type="button" data-copy="0898 123 696" data-label="Hotline" title="Bấm để sao chép số Hotline: 0898 123 696">
+              <span class="cp-lbl">Hotline</span>
+              <span class="cp-val">0898 123 696</span>
+              <span class="cp-icon" aria-hidden="true">📋</span>
+            </button>
+            <button class="contact-pill" type="button" data-copy="0792 951 529" data-label="Zalo" title="Bấm để sao chép số Zalo: 0792 951 529">
+              <span class="cp-lbl">Zalo</span>
+              <span class="cp-val">0792 951 529</span>
+              <span class="cp-icon" aria-hidden="true">📋</span>
+            </button>
+          </div>
+        </div>
       </div>
-      <div class="hotline"><span>Hotline / Zalo</span><a href="tel:0792951529">079 29 51 529</a><a href="tel:0898123696">0898 123 696</a></div>
-    </div>
-    <div class="eyebrow">Education &amp; Careers · B2 – C1 · Practice Test 01</div>
-    <h1>Career Paths <span>&amp;</span> Future Jobs</h1>
-    <p class="sub">Ôn từ vựng trọng tâm từ 4 bài đọc: AI và việc làm sinh viên, kỹ năng xanh, tương lai việc làm 2030, tuyển dụng theo kỹ năng. Mỗi từ có phiên âm, nghĩa, từ đồng nghĩa/trái nghĩa và câu gốc trong bài.</p>
-    <div class="ladder" aria-label="Tiến độ học">
-      <div class="rungs" id="rungs"></div>
-      <div class="ladder-label">Nấc thang đã leo: <b id="knownN">0</b>/<span id="totalN">0</span> từ</div>
-    </div>
-  </header>
 
-  <div class="controls">
-    <div class="chips" id="chips" role="group" aria-label="Lọc theo bài đọc"></div>
-    <div class="tabs" role="tablist" id="tabs">
-      <button class="tab" role="tab" data-tab="cards" id="tab-cards">Thẻ ghi nhớ</button>
-      <button class="tab" role="tab" data-tab="quiz" id="tab-quiz">Trắc nghiệm</button>
-      <button class="tab" role="tab" data-tab="gap" id="tab-gap">Điền từ</button>
-      <button class="tab" role="tab" data-tab="list" id="tab-list">Danh sách</button>
+      <div class="topic-header-bar">
+        <div class="eyebrow" id="topicEyebrow">Education &amp; Careers · B2 – C1 · Practice Test 01</div>
+        <button class="topic-btn" id="openTopicModal" type="button" aria-haspopup="dialog" aria-label="Đổi chủ đề từ vựng">
+          <span class="topic-btn-label">Chuyên đề: <b id="topicBtnName">Career Paths</b></span>
+          <span class="topic-btn-arrow">▾</span>
+        </button>
+      </div>
+
+      <h1 id="topicTitle">Career Paths <span>&amp;</span> Future Jobs</h1>
+      <p class="sub" id="topicDesc">Ôn từ vựng trọng tâm từ các bài đọc. Mỗi từ có phiên âm, nghĩa, từ đồng nghĩa/trái nghĩa và câu gốc trong bài.</p>
+
+      <div class="ladder" id="openStatsBtn" role="button" tabindex="0" aria-haspopup="dialog" aria-label="Xem bảng thống kê học tập" title="Nhấp để xem bảng thống kê chi tiết & đặt lại tiến độ">
+        <div class="rungs" id="rungs"></div>
+        <div class="ladder-label">Nấc thang đã leo: <b id="knownN">0</b>/<span id="totalN">0</span> từ <span class="ladder-hint">📊 Thống kê</span></div>
+      </div>
+    </header>
+
+    <!-- Bộ điều khiển: Lọc theo bài đọc & Chuyển chế độ học -->
+    <div class="controls">
+      <div class="chips" id="chips" role="group" aria-label="Lọc theo bài đọc"></div>
+      <div class="tabs" role="tablist" id="tabs">
+        <button class="tab" role="tab" data-tab="cards" id="tab-cards" aria-selected="true"><span class="tab-icon">📇</span><span class="tab-text">Thẻ nhớ</span></button>
+        <button class="tab" role="tab" data-tab="quiz" id="tab-quiz" aria-selected="false"><span class="tab-icon">❓</span><span class="tab-text">Trắc nghiệm</span></button>
+        <button class="tab" role="tab" data-tab="gap" id="tab-gap" aria-selected="false"><span class="tab-icon">✏️</span><span class="tab-text">Điền từ</span></button>
+        <button class="tab" role="tab" data-tab="spell" id="tab-spell" aria-selected="false"><span class="tab-icon">⌨️</span><span class="tab-text">Luyện gõ</span></button>
+        <button class="tab" role="tab" data-tab="match" id="tab-match" aria-selected="false"><span class="tab-icon">⚡</span><span class="tab-text">Ghép từ</span></button>
+        <button class="tab" role="tab" data-tab="list" id="tab-list" aria-selected="false"><span class="tab-icon">📖</span><span class="tab-text">Danh sách</span></button>
+      </div>
     </div>
+
+    <!-- Khung nội dung chính của chế độ học hiện tại -->
+    <main id="view" class="panel"></main>
+
+    <!-- Modal Dialog: Chọn chủ đề ôn tập -->
+    <dialog id="topicModal" class="topic-dialog" aria-labelledby="topicModalTitle">
+      <div class="topic-dialog-inner">
+        <div class="topic-dialog-h">
+          <div>
+            <h2 id="topicModalTitle">Chọn chuyên đề ôn tập</h2>
+            <p class="topic-dialog-sub">Chọn một chủ đề bài đọc để luyện tập từ vựng</p>
+          </div>
+          <button class="topic-dialog-close" id="closeTopicModal" type="button" aria-label="Đóng">&times;</button>
+        </div>
+        <div class="topic-list" id="topicList">
+          <!-- Được sinh tự động bởi JavaScript -->
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding-top:14px;border-top:1px solid var(--line);margin-top:6px">
+          <span style="font-size:13px;color:var(--muted)">Dành cho giáo viên:</span>
+          <a href="studio.html" class="btn" style="padding:6px 14px;font-size:12.5px;text-decoration:none">🛠️ Studio nhập từ mới</a>
+        </div>
+      </div>
+    </dialog>
+
+    <!-- Modal Dialog: Bảng Thống Kê & Đặt Lại Tiến Độ -->
+    <dialog id="statsModal" class="stats-dialog" aria-labelledby="statsModalTitle">
+      <div class="stats-dialog-inner">
+        <div class="stats-dialog-h">
+          <div>
+            <h2 id="statsModalTitle" style="font-size:18px;margin:0">📊 Thống Kê Tiến Độ Học Tập</h2>
+            <p id="statsModalSub" style="margin:3px 0 0;font-size:13px;color:var(--muted)">Chuyên đề: Career Paths</p>
+          </div>
+          <button class="topic-dialog-close" id="closeStatsModal" type="button" aria-label="Đóng">&times;</button>
+        </div>
+
+        <div class="stats-grid" id="statsGrid">
+          <!-- Được sinh tự động bởi JavaScript -->
+        </div>
+
+        <div class="stats-actions">
+          <button class="btn danger" id="resetProgressBtn" type="button">🔄 Đặt lại tiến độ chuyên đề này</button>
+          <button class="btn secondary" id="closeStatsModalBtn" type="button">Đóng</button>
+        </div>
+      </div>
+    </dialog>
+
+    <!-- Modal Dialog: Google Maps Vị trí trung tâm (Hỗ trợ 2 cơ sở) -->
+    <dialog id="mapModal" class="map-dialog" aria-labelledby="mapModalTitle">
+      <div class="map-dialog-inner">
+        <div class="map-dialog-h">
+          <div>
+            <h2 id="mapModalTitle" style="font-size:18px;margin:0">📍 Ms Trâm English Hub</h2>
+            <p id="mapModalSub" style="margin:3px 0 0;font-size:13px;color:var(--muted)">12 Lê Đình Chinh, Quy Nhơn Nam, Gia Lai, Việt Nam</p>
+          </div>
+          <button class="topic-dialog-close" id="closeMapModal" type="button" aria-label="Đóng">&times;</button>
+        </div>
+
+        <!-- Thanh chuyển đổi giữa 2 cơ sở dạy học -->
+        <div class="branch-tabs" role="tablist" aria-label="Chọn cơ sở học">
+          <button class="branch-tab is-active" id="branchTab1" data-branch="1" type="button" role="tab" aria-selected="true">
+            🏫 Cơ sở 1 (12 Lê Đình Chinh)
+          </button>
+          <button class="branch-tab" id="branchTab2" data-branch="2" type="button" role="tab" aria-selected="false">
+            🏫 Cơ sở 2 (32 Chu Văn An)
+          </button>
+        </div>
+
+        <!-- Khung iframe bản đồ Cơ sở 1 -->
+        <div class="map-frame-box" id="mapFrameBox1">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3875.2163041818817!2d109.19867797593398!3d13.7658254866275!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x316f6cb8136e42b1%3A0xbb5cf9fdf3940873!2zMTIgTMOqIMSQw6xuaCBDaGluaCwgUXV5IE5oxqFuIE5hbSwgR2lhIExhaSwgVmnhu4d0IE5hbQ!5e0!3m2!1svi!2s!4v1791729811915!5m2!1svi!2s" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+        </div>
+
+        <!-- Khung iframe bản đồ Cơ sở 2 -->
+        <div class="map-frame-box" id="mapFrameBox2" style="display:none">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3875.1424148818687!2d109.22174157593393!3d13.770283986623541!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x316f6c8e2498a189%3A0x9b172d9626b337d7!2zMzIgQ2h1IFbEg24gQW4sIFF1eSBOaMahbiwgR2lhIExhaSwgVmnhu4d0IE5hbQ!5e0!3m2!1svi!2s!4v1791730368375!5m2!1svi!2s" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+          <span style="font-size:12.5px;color:var(--muted)">Nhấp và kéo bản đồ để xem chi tiết đường đi</span>
+          <a id="externalMapLink" href="https://maps.google.com/?q=12+Lê+Đình+Chinh,+Quy+Nhơn+Nam,+Gia+Lai" target="_blank" rel="noopener noreferrer" class="btn primary" style="font-size:13px;text-decoration:none">Mở trên Google Maps ↗</a>
+        </div>
+      </div>
+    </dialog>
+
+    <!-- Thông tin liên hệ & 2 Cơ sở học tập (Được thiết kế tinh gọn, chống rối) -->
+    <section class="contact-card" aria-label="Thông tin lớp học Ms Trâm English Hub">
+      <div class="contact-card-header">
+        <div class="contact-card-brand">
+          <svg viewBox="0 0 84 60" role="img" aria-hidden="true" class="contact-logo">
+            <g>
+              <polygon points="30,7 41,18 30,29 19,18" fill="#0C3A5E"/>
+              <polygon points="18,19 29,30 18,41 7,30" fill="#1B5F93"/>
+              <polygon points="30,31 41,42 30,53 19,42" fill="#1E78BC"/>
+              <polygon points="42,19 53,30 42,41 31,30" fill="#2D97DA"/>
+              <polygon points="54,7 65,18 54,29 43,18" fill="#33A9EC"/>
+              <polygon points="66,19 77,30 66,41 55,30" fill="#7CC9F3"/>
+              <polygon points="54,31 65,42 54,53 43,42" fill="#A6DBF7"/>
+            </g>
+          </svg>
+          <div>
+            <h2 class="contact-title">Ms Trâm English Hub</h2>
+            <p class="contact-sub">Lớp luyện thi THPTQG &amp; ĐGNL Tiếng Anh · Đọc hiểu nâng cao theo chuyên đề</p>
+          </div>
+        </div>
+        <a href="https://www.facebook.com/mstramengclass" target="_blank" rel="noopener noreferrer" class="contact-fb-btn" title="Ghé thăm Fanpage Facebook Ms Trâm English Class">
+          <span class="fb-icon">🌐</span> Facebook Fanpage ↗
+        </a>
+      </div>
+
+      <div class="contact-card-body">
+        <!-- 2 Cơ sở học tập (Chia 2 thẻ rõ ràng, không bị rối) -->
+        <div class="contact-section-title">🏫 Địa chỉ 2 cơ sở giảng dạy (Bấm để xem bản đồ chỉ đường):</div>
+        <div class="branches-grid">
+          <button class="branch-tile-btn" data-branch="1" type="button" aria-haspopup="dialog" title="Nhấp để xem bản đồ Cơ sở 1">
+            <div class="bt-badge">Cơ sở 1</div>
+            <div class="bt-content">
+              <span class="bt-name">12 Lê Đình Chinh</span>
+              <span class="bt-city">Quy Nhơn Nam, Gia Lai</span>
+            </div>
+            <span class="bt-arrow">🗺️ Bản đồ</span>
+          </button>
+          <button class="branch-tile-btn" data-branch="2" type="button" aria-haspopup="dialog" title="Nhấp để xem bản đồ Cơ sở 2">
+            <div class="bt-badge">Cơ sở 2</div>
+            <div class="bt-content">
+              <span class="bt-name">32 Chu Văn An</span>
+              <span class="bt-city">Quy Nhơn, Gia Lai</span>
+            </div>
+            <span class="bt-arrow">🗺️ Bản đồ</span>
+          </button>
+        </div>
+
+        <!-- Hotline & Zalo: Bấm vào là tự động copy tức thì -->
+        <div class="contact-channels-grid">
+          <button class="channel-btn" data-copy="0898 123 696" data-label="Hotline" type="button" title="Bấm để sao chép số Hotline">
+            <span class="ch-icon">📞</span>
+            <div class="ch-info">
+              <span class="ch-lbl">Hotline tư vấn</span>
+              <span class="ch-val">0898 123 696</span>
+            </div>
+            <span class="ch-copy-badge">Sao chép 📋</span>
+          </button>
+          <button class="channel-btn" data-copy="0792 951 529" data-label="Zalo" type="button" title="Bấm để sao chép số Zalo">
+            <span class="ch-icon">💬</span>
+            <div class="ch-info">
+              <span class="ch-lbl">Zalo cô Trâm</span>
+              <span class="ch-val">0792 951 529</span>
+            </div>
+            <span class="ch-copy-badge">Sao chép 📋</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Chân trang -->
+    <footer>
+      © <a href="https://www.facebook.com/mstramengclass" target="_blank" rel="noopener noreferrer">Ms Trâm English Hub</a> · <a href="https://www.facebook.com/mstramengclass" target="_blank" rel="noopener noreferrer">Facebook</a> · Tiếng Anh cho mọi lứa tuổi · <a href="studio.html">Teacher Studio</a>
+    </footer>
+
+    <!-- Toast thông báo nổi khi bấm sao chép -->
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
   </div>
 
-  <main id="view" class="panel"></main>
-
-  <section class="contact" aria-label="Thông tin liên hệ">
-    <svg viewBox="0 0 84 60" role="img" aria-hidden="true"><g>
-<polygon points="30,7 41,18 30,29 19,18" fill="#0C3A5E"/><polygon points="18,19 29,30 18,41 7,30" fill="#1B5F93"/>
-<polygon points="30,31 41,42 30,53 19,42" fill="#1E78BC"/><polygon points="42,19 53,30 42,41 31,30" fill="#2D97DA"/>
-<polygon points="54,7 65,18 54,29 43,18" fill="#33A9EC"/><polygon points="66,19 77,30 66,41 55,30" fill="#7CC9F3"/>
-<polygon points="54,31 65,42 54,53 43,42" fill="#A6DBF7"/></g></svg>
-    <div>
-      <h2 style="font-size:20px;margin-bottom:10px">Ms Trâm English Hub</h2>
-      <dl>
-        <dt>Địa chỉ</dt><dd>12 Lê Đình Chinh – Quy Nhơn Nam</dd>
-        <dt>Zalo / HP</dt><dd><a href="tel:0792951529">079 29 51 529</a> &nbsp;–&nbsp; <a href="tel:0898123696">0898 123 696</a></dd>
-        <dt>Lớp học</dt><dd>Luyện thi THPTQG / ĐGNL Tiếng Anh · Đọc hiểu nâng cao theo chủ đề</dd>
-      </dl>
-    </div>
-  </section>
-  <footer>© Ms Trâm English Hub · Tiếng Anh cho mọi lứa tuổi</footer>
-</div>
-
-<script>
-const W = [
- {w:"obsolete",ipa:"/ˌɒbsəˈliːt/",pos:"adj",vi:"lỗi thời, không còn cần thiết",p:1,ex:"None of this means that AI is destined to make young professionals ___.",form:"obsolete",syn:"outdated",ant:"relevant"},
- {w:"culprit",ipa:"/ˈkʌlprɪt/",pos:"n",vi:"thủ phạm, nguyên nhân gây ra vấn đề",p:1,ex:"The papers themselves stop short of naming ChatGPT as the sole ___.",form:"culprit",syn:"the one responsible",ant:"victim"},
- {w:"take on",ipa:"/teɪk ɒn/",pos:"phr v",vi:"tuyển dụng, nhận vào làm",p:1,ex:"Existing staff were not being dismissed; new ones were simply not being ___.",form:"taken on",syn:"hire",ant:"dismiss"},
- {w:"dismiss",ipa:"/dɪsˈmɪs/",pos:"v",vi:"sa thải, cho thôi việc",p:1,ex:"It was not that existing staff were being ___.",form:"dismissed",syn:"fire",ant:"recruit"},
- {w:"drift into",ipa:"/drɪft ˈɪntuː/",pos:"phr v",vi:"trôi dạt sang, rơi vào (một cách bị động)",p:1,ex:"The other half came from those who ___ restaurants and retail.",form:"drifted into",syn:"slip into"},
- {w:"underemployment",ipa:"/ˌʌndərɪmˈplɔɪmənt/",pos:"n",vi:"tình trạng làm việc dưới trình độ",p:1,ex:"45 per cent were still in such roles a decade later – a phenomenon economists call ___.",form:"underemployment"},
- {w:"substantial",ipa:"/səbˈstænʃl/",pos:"adj",vi:"đáng kể, lớn",p:1,ex:"The gaps narrow over time, though they remain ___ years later.",form:"substantial",syn:"considerable",ant:"negligible"},
- {w:"albeit",ipa:"/ˌɔːlˈbiːɪt/",pos:"conj",vi:"mặc dù",p:1,ex:"Hiring volumes had largely recovered by early 2025, ___ from a smaller base.",form:"albeit",syn:"although",dist:["despite","however","whereas"]},
- {w:"knee-jerk",ipa:"/ˈniː dʒɜːk/",pos:"adj",vi:"(phản ứng) vội vàng, theo phản xạ",p:1,ex:"Whether that represents a sensible recalculation or a ___ reaction remains to be seen.",form:"knee-jerk",syn:"hasty",ant:"considered"},
- {w:"enrolment",ipa:"/ɪnˈrəʊlmənt/",pos:"n",vi:"sự ghi danh; số lượng nhập học",p:1,ex:"In spring 2026, ___ in computer science fell by 8.4 per cent.",form:"enrolment"},
-
- {w:"niche",ipa:"/niːʃ/",pos:"adj",vi:"ngách, chuyên biệt, ít người dùng",p:2,ex:"LinkedIn describes green skills as increasingly foundational rather than ___.",form:"niche",syn:"specialised",ant:"mainstream"},
- {w:"foundational",ipa:"/faʊnˈdeɪʃənl/",pos:"adj",vi:"mang tính nền tảng, cơ bản",p:2,ex:"LinkedIn describes green skills as increasingly ___ rather than niche.",form:"foundational",syn:"fundamental",ant:"optional"},
- {w:"sought after",ipa:"/ˈsɔːt ɑːftə(r)/",pos:"adj",vi:"được săn đón, có nhu cầu cao",p:2,ex:"Those who do have green skills are highly ___.",form:"sought after",syn:"in demand",ant:"unwanted"},
- {w:"mismatch",ipa:"/ˈmɪsmætʃ/",pos:"n",vi:"sự không khớp, mất cân đối",p:2,ex:"The most striking finding concerns the ___ between supply and demand.",form:"mismatch",syn:"imbalance"},
- {w:"eager",ipa:"/ˈiːɡə(r)/",pos:"adj",vi:"háo hức, hăng hái",p:2,ex:"Young people seem ___ to ride this wave.",form:"eager",syn:"keen",ant:"reluctant"},
- {w:"deliberate",ipa:"/dɪˈlɪbərət/",pos:"adj",vi:"có chủ đích, có tính toán",p:2,ex:"Without ___ investment in training, the world risks leaving opportunity on the table.",form:"deliberate",syn:"intentional",ant:"accidental"},
- {w:"weigh up",ipa:"/weɪ ʌp/",pos:"phr v",vi:"cân nhắc, đánh giá",p:2,ex:"For school-leavers ___ their options, the lesson is about transferable skills.",form:"weighing up",syn:"consider"},
- {w:"literacy",ipa:"/ˈlɪtərəsi/",pos:"n",vi:"năng lực, hiểu biết (digital literacy: năng lực số)",p:2,ex:"Digital ___ migrated from the IT department to virtually every desk.",form:"literacy",syn:"competence"},
- {w:"transition",ipa:"/trænˈzɪʃn/",pos:"n",vi:"sự chuyển đổi",p:2,ex:"The climate ___ is reshaping jobs that have nothing green in their titles.",form:"transition",syn:"shift"},
-
- {w:"materialise",ipa:"/məˈtɪəriəlaɪz/",pos:"v",vi:"trở thành hiện thực, xảy ra",p:3,ex:"Each wave of technology brought forecasts of mass unemployment that never fully ___.",form:"materialised",syn:"come about"},
- {w:"nuanced",ipa:"/ˈnjuːɑːnst/",pos:"adj",vi:"nhiều sắc thái, tinh tế, cân nhắc",p:3,ex:"The report offers a more ___ picture: disruption, but not necessarily destruction.",form:"nuanced",syn:"balanced",ant:"simplistic"},
- {w:"displace",ipa:"/dɪsˈpleɪs/",pos:"v",vi:"thay thế, làm mất (việc làm)",p:3,ex:"170 million new jobs will be created while 92 million will be ___.",form:"displaced",syn:"replace"},
- {w:"counter-intuitively",ipa:"/ˌkaʊntər ɪnˈtjuːɪtɪvli/",pos:"adv",vi:"trái với trực giác, ngược với suy nghĩ thông thường",p:3,ex:"Perhaps ___, the largest growth is expected in frontline roles.",form:"counter-intuitively",syn:"surprisingly",dist:["deliberately","prematurely","substantially"]},
- {w:"resilience",ipa:"/rɪˈzɪliəns/",pos:"n",vi:"khả năng phục hồi, sức bền bỉ",p:3,ex:"Human capabilities such as analytical thinking, ___ and flexibility are rising in importance.",form:"resilience",syn:"toughness",ant:"fragility"},
- {w:"upskill",ipa:"/ˈʌpskɪl/",pos:"v",vi:"nâng cao kỹ năng (cho nhân viên)",p:3,ex:"77 per cent of employers plan to ___ their existing workforce.",form:"upskill",syn:"retrain"},
- {w:"headcount",ipa:"/ˈhedkaʊnt/",pos:"n",vi:"số lượng nhân sự",p:3,ex:"41 per cent anticipate reducing ___ where AI can automate tasks.",form:"headcount",syn:"staff numbers"},
- {w:"depreciate",ipa:"/dɪˈpriːʃieɪt/",pos:"v",vi:"mất giá, giảm giá trị",p:3,ex:"Those who treat education as a one-off investment risk finding that it ___ quickly.",form:"depreciates",syn:"lose value",ant:"appreciate"},
- {w:"weather",ipa:"/ˈweðə(r)/",pos:"v",vi:"vượt qua, chống chọi (khó khăn)",p:3,ex:"Lifelong learners are better placed to ___ whatever disruption the decade brings.",form:"weather",syn:"withstand",ant:"succumb to"},
- {w:"disruption",ipa:"/dɪsˈrʌpʃn/",pos:"n",vi:"sự xáo trộn, gián đoạn",p:3,ex:"The report predicts ___ on a vast scale, but not necessarily destruction.",form:"disruption",syn:"upheaval",ant:"stability"},
-
- {w:"prerequisite",ipa:"/ˌpriːˈrekwəzɪt/",pos:"n",vi:"điều kiện tiên quyết",p:4,ex:"A four-year degree is no longer a ___ for many of their jobs.",form:"prerequisite",syn:"requirement",ant:"option"},
- {w:"fanfare",ipa:"/ˈfænfeə(r)/",pos:"n",vi:"sự phô trương, rầm rộ",p:4,ex:"Employers have announced the change, often with considerable ___.",form:"fanfare",syn:"publicity"},
- {w:"compelling",ipa:"/kəmˈpelɪŋ/",pos:"adj",vi:"thuyết phục, hấp dẫn",p:4,ex:"The logic is ___: most adults do not hold a bachelor's degree.",form:"compelling",syn:"convincing",ant:"unconvincing"},
- {w:"credential",ipa:"/krəˈdenʃl/",pos:"n",vi:"bằng cấp, chứng chỉ",p:4,ex:"Assessing skills predicts performance better than looking at educational ___.",form:"credentials",syn:"qualification"},
- {w:"rhetoric",ipa:"/ˈretərɪk/",pos:"n",vi:"lời lẽ hoa mỹ, lời nói suông",p:4,ex:"The study suggests that ___ has run well ahead of reality.",form:"rhetoric",syn:"empty talk",ant:"action"},
- {w:"stall",ipa:"/stɔːl/",pos:"v",vi:"chững lại, đình trệ",p:4,ex:"Why does the change ___?",form:"stall",syn:"stagnate",ant:"accelerate"},
- {w:"revert to",ipa:"/rɪˈvɜːt tuː/",pos:"phr v",vi:"quay trở lại (tình trạng cũ)",p:4,ex:"After an initial improvement, they gradually ___ hiring fewer non-graduates.",form:"reverted to",syn:"return to"},
- {w:"backslider",ipa:"/ˈbækslaɪdə(r)/",pos:"n",vi:"người/tổ chức thụt lùi, quay lại thói cũ",p:4,ex:"Around one-fifth of the firms studied were classified as ___.",form:"backsliders"},
- {w:"demise",ipa:"/dɪˈmaɪz/",pos:"n",vi:"sự cáo chung, suy tàn",p:4,ex:"A degree remains a powerful signal, and headlines announcing its ___ are premature.",form:"demise",syn:"end",ant:"rise"},
- {w:"premature",ipa:"/ˈpremətʃə(r)/",pos:"adj",vi:"quá sớm, vội vàng",p:4,ex:"Headlines announcing the demise of the degree are ___.",form:"premature",syn:"hasty",ant:"timely"},
- {w:"screen out",ipa:"/skriːn aʊt/",pos:"phr v",vi:"sàng lọc, loại ra",p:4,ex:"Such a filter saves time, but it also ___ capable applicants.",form:"screens out",syn:"filter out"},
-];
-const PASS = {1:"AI & graduate jobs",2:"Green skills",3:"Future of jobs 2030",4:"Skills-based hiring"};
-
-/* ---------- state ---------- */
-const store = {
-  get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},
-  set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
-};
-const known = new Set(store.get("cpv-known",[]));
-let filter = "all", tab = store.get("cpv-tab","cards");
-let cardOrder = null, cardIdx = 0, flipped = false;
-let session = null; // quiz or gap session
-const $ = s => document.querySelector(s);
-const esc = s => String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-const shuffle = a => {a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
-const pool = () => filter==="all" ? W : W.filter(x=>x.p===+filter);
-const filled = x => esc(x.ex).replace("___",`<mark>${esc(x.form)}</mark>`);
-const posGroup = p => (p==="v"||p==="phr v") ? "v" : p;
-
-function speak(t){try{const u=new SpeechSynthesisUtterance(t);u.lang="en-GB";u.rate=.9;speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}}
-function toggleKnown(w){known.has(w)?known.delete(w):known.add(w);store.set("cpv-known",[...known]);drawLadder()}
-
-function drawLadder(){
-  $("#rungs").innerHTML = W.map(x=>`<div class="rung${known.has(x.w)?" on":""}" title="${esc(x.w)}"></div>`).join("");
-  $("#knownN").textContent = known.size; $("#totalN").textContent = W.length;
-}
-function drawChips(){
-  const opts=[["all","Tất cả"],["1","Bài 1"],["2","Bài 2"],["3","Bài 3"],["4","Bài 4"]];
-  $("#chips").innerHTML = opts.map(([v,l])=>`<button class="chip" data-f="${v}" aria-pressed="${filter===v}" title="${v==="all"?"":esc(PASS[v])}">${l}</button>`).join("");
-}
-$("#chips").addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;filter=b.dataset.f;cardOrder=null;cardIdx=0;session=null;drawChips();render()});
-$("#tabs").addEventListener("click",e=>{const b=e.target.closest(".tab");if(!b)return;tab=b.dataset.tab;store.set("cpv-tab",tab);session=null;render()});
-if(!["cards","quiz","gap","list"].includes(tab))tab="cards";
-
-function render(){
-  document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected",t.dataset.tab===tab));
-  ({cards:renderCards,quiz:renderQuiz,gap:renderGap,list:renderList})[tab]();
-}
-
-/* ---------- flashcards ---------- */
-function renderCards(){
-  const P = pool();
-  if(!cardOrder) cardOrder = P.map(x=>x.w);
-  const x = W.find(y=>y.w===cardOrder[cardIdx]);
-  const rel = [x.syn&&`<span><b>Đồng nghĩa</b>${esc(x.syn)}</span>`, x.ant&&`<span><b>Trái nghĩa</b>${esc(x.ant)}</span>`].filter(Boolean).join("");
-  $("#view").innerHTML = `
-   <div class="row" style="justify-content:space-between">
-     <span class="counter">Thẻ ${cardIdx+1} / ${cardOrder.length}</span>
-     <div class="row"><button class="btn" id="shuf">Trộn thẻ</button><button class="btn" id="say">🔊 Nghe</button></div>
-   </div>
-   <div class="stage"><div class="card${flipped?" flip":""}" id="card" tabindex="0" role="button" aria-label="Lật thẻ">
-     <div class="face front">
-       <div class="row center"><span class="tag">${esc(x.pos)}</span><span class="tag">Bài ${x.p} · ${esc(PASS[x.p])}</span></div>
-       <div class="word">${esc(x.w)}</div>
-       <div class="ipa">${esc(x.ipa)}</div>
-       <div class="hint">Chạm hoặc nhấn Space để lật</div>
-     </div>
-     <div class="face back">
-       <div class="row"><span class="tag">${esc(x.w)}</span><span class="ipa">${esc(x.ipa)}</span></div>
-       <div class="vi">${esc(x.vi)}</div>
-       ${rel?`<div class="rel">${rel}</div>`:""}
-       <p class="ex">${filled(x)}</p>
-     </div>
-   </div></div>
-   <div class="row center">
-     <button class="btn" id="prev">← Trước</button>
-     <button class="btn ${known.has(x.w)?"known":""}" id="know">${known.has(x.w)?"✓ Đã thuộc":"Đánh dấu đã thuộc"}</button>
-     <button class="btn primary" id="next">Tiếp →</button>
-   </div>`;
-  const go = d => {cardIdx=(cardIdx+d+cardOrder.length)%cardOrder.length;flipped=false;renderCards()};
-  $("#card").onclick = () => {flipped=!flipped;$("#card").classList.toggle("flip",flipped)};
-  $("#prev").onclick = () => go(-1); $("#next").onclick = () => go(1);
-  $("#know").onclick = () => {toggleKnown(x.w);renderCards()};
-  $("#say").onclick = () => speak(x.w);
-  $("#shuf").onclick = () => {cardOrder=shuffle(cardOrder);cardIdx=0;flipped=false;renderCards()};
-}
-document.addEventListener("keydown",e=>{
-  if(tab!=="cards"||e.target.tagName==="INPUT")return;
-  if(e.key===" "){e.preventDefault();$("#card")?.click()}
-  if(e.key==="ArrowRight")$("#next")?.click();
-  if(e.key==="ArrowLeft")$("#prev")?.click();
-});
-
-/* ---------- question builders ---------- */
-function pick(arr,n,exclude){return shuffle([...new Set(arr)].filter(v=>v&&!exclude.includes(v))).slice(0,n)}
-/* words that mean the same thing, so they never appear as a "wrong" option next to each other */
-const CLUSTERS=[["take on","hire","recruit"],["dismiss","fire"],["knee-jerk","premature","hasty"],["foundational","fundamental"],["displace","replace"],["upskill","retrain"],["demise","end"],["screen out","filter out"],["prerequisite","requirement"],["nuanced","balanced"],["albeit","although"],["materialise","come about"]];
-const kin = w => CLUSTERS.filter(c=>c.includes(w)).flat();
-function quizQ(x){
-  const others = W.filter(y=>y.w!==x.w && !kin(x.w).includes(y.w));
-  const types = ["meaning","reverse"]; if(x.syn)types.push("syn","syn"); if(x.ant)types.push("ant","ant");
-  const t = types[Math.floor(Math.random()*types.length)];
-  if(t==="meaning") return {x,label:"Nghĩa của từ",prompt:`“${x.w}” nghĩa là gì?`,ans:x.vi,opts:[x.vi,...pick(others.map(y=>y.vi),3,[x.vi])]};
-  if(t==="reverse") return {x,label:"Chọn từ",prompt:`Từ nào có nghĩa “${x.vi}”?`,ans:x.w,opts:[x.w,...pick(others.map(y=>y.w),3,[x.w])]};
-  const relPool = others.flatMap(y=>[y.syn,y.ant]).filter(Boolean);
-  if(t==="syn") return {x,label:"Đồng nghĩa",prompt:`Từ ĐỒNG NGHĨA với “${x.w}”`,ans:x.syn,opts:[x.syn,...pick(relPool,3,[x.w,x.syn,x.ant,...kin(x.w),...kin(x.syn)])]};
-  const ex2=[x.w,x.ant,x.syn,...kin(x.ant)];
-  const d = x.syn ? [x.syn,...pick(relPool,2,ex2)] : pick(relPool,3,ex2);
-  return {x,label:"Trái nghĩa",prompt:`Từ TRÁI NGHĨA với “${x.w}”`,ans:x.ant,opts:[x.ant,...d]};
-}
-function gapQ(x){
-  const ok = y => y.w!==x.w && !kin(x.w).includes(y.w);
-  const same = W.filter(y=>ok(y) && posGroup(y.pos)===posGroup(x.pos)).map(y=>y.form);
-  const any = W.filter(ok).map(y=>y.form);
-  let d = x.dist ? [...x.dist] : pick(same,3,[x.form]); if(d.length<3) d=d.concat(pick(any,3-d.length,[x.form,...d]));
-  return {x,label:"Điền từ vào chỗ trống",gap:true,prompt:esc(x.ex).replace("___",'<span class="blank">______</span>'),ans:x.form,opts:[x.form,...d]};
-}
-function newSession(kind){
-  const P = shuffle(pool()).slice(0,10);
-  return {kind,qs:P.map(x=>{const q=kind==="quiz"?quizQ(x):gapQ(x);q.opts=shuffle(q.opts);return q}),i:0,score:0,picked:null,miss:[],t0:Date.now()};
-}
-
-function renderSession(kind){
-  if(!student) return studentForm(kind);
-  if(!session||session.kind!==kind) session=newSession(kind);
-  const s=session;
-  if(s.i>=s.qs.length) return renderScore(kind);
-  const q=s.qs[s.i], done=s.picked!==null;
-  const letters="ABCD";
-  $("#view").innerHTML = whoBar() + `
-   <div class="q">
-     <div class="q-top"><span class="eyebrow">${q.label} · Bài ${q.x.p}</span><span class="counter">Câu ${s.i+1}/${s.qs.length} · Đúng ${s.score}</span></div>
-     <div class="bar"><i style="width:${(s.i/s.qs.length)*100}%"></i></div>
-     <div class="prompt${q.gap?" sent":""}">${q.gap?q.prompt:esc(q.prompt)}</div>
-     <div class="opts">${q.opts.map((o,i)=>{
-        let c=""; if(done){ if(o===q.ans)c="right"; else if(o===s.picked)c="wrong"; }
-        return `<button class="opt ${c}" data-o="${esc(o)}" ${done?"disabled":""}><span class="k">${letters[i]}</span><span>${esc(o)}</span></button>`}).join("")}</div>
-     ${done?`<div class="fb"><strong class="${s.picked===q.ans?"ok":"no"}">${s.picked===q.ans?"Chính xác!":"Chưa đúng."}</strong>
-        <b>${esc(q.x.w)}</b> <span class="ipa">${esc(q.x.ipa)}</span> (${esc(q.x.pos)}): ${esc(q.x.vi)}${q.x.syn?` · ĐN: ${esc(q.x.syn)}`:""}${q.x.ant?` · TN: ${esc(q.x.ant)}`:""}
-        <p class="ex">${filled(q.x)}</p></div>
-        <div class="row" style="justify-content:flex-end"><button class="btn primary" id="nextQ">${s.i+1<s.qs.length?"Câu tiếp →":"Xem kết quả"}</button></div>`:""}
-   </div>`;
-  document.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{
-    s.picked=b.dataset.o; if(s.picked===q.ans)s.score++; else s.miss.push(q.x); renderSession(kind);
-  });
-  if(done)$("#nextQ").onclick=()=>{s.i++;s.picked=null;renderSession(kind)};
-}
-/* ---------- student identity & result codes ---------- */
-let student = store.get("cpv-student",null);
-const MODE = {quiz:"Trắc nghiệm",gap:"Điền từ"};
-const scopeName = f => f==="all"?"Tất cả các bài":"Bài "+f+" – "+PASS[f];
-function whoBar(){
-  return `<div class="who">Học sinh: <b>${esc(student.n)}</b> · Lớp <b>${esc(student.c)}</b><button class="linkbtn" id="chg">Đổi tên</button></div>`;
-}
-document.addEventListener("click",e=>{if(e.target.id==="chg"){student=null;store.set("cpv-student",null);session=null;render()}});
-function studentForm(kind){
-  $("#view").innerHTML = `<div class="q form" id="sf">
-    <div><span class="eyebrow">${MODE[kind]} · Bước 1</span><h2 style="font-size:22px;margin-top:4px">Nhập thông tin trước khi làm bài</h2></div>
-    <p style="margin:0;color:var(--muted);font-size:14.5px">Làm xong 10 câu, em chụp màn hình phiếu kết quả rồi gửi cô qua Zalo.</p>
-    <div class="field"><label for="sn">Họ và tên</label><input id="sn" autocomplete="name" placeholder="VD: Nguyễn Thị Lan" maxlength="40"></div>
-    <div class="field"><label for="sc">Lớp</label><input id="sc" placeholder="VD: 12A1" maxlength="15"></div>
-    <p class="err" id="se" hidden>Em nhập đầy đủ họ tên và lớp nhé.</p>
-    <div><button class="btn primary" type="button" id="startBtn">Bắt đầu làm bài</button></div>
-  </div>`;
-  try{$("#sn").focus({preventScroll:true})}catch(e){}
-  const start=()=>{
-    const n=$("#sn").value.trim().replace(/\s+/g," "), c=$("#sc").value.trim().toUpperCase();
-    if(n.length<2||!c){$("#se").hidden=false;(n.length<2?$("#sn"):$("#sc")).focus();return}
-    student={n,c};store.set("cpv-student",student);session=null;renderSession(kind);
-  };
-  $("#startBtn").addEventListener("click",start);
-  ["#sn","#sc"].forEach(id=>$(id).addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();start()}}));
-}
-const fmtTime = ts => new Date(ts).toLocaleString("vi-VN",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"});
-const fmtDur = d => `${Math.floor(d/60)} phút ${d%60} giây`;
-function renderScore(kind){
-  const s=session, pct=Math.round(s.score/s.qs.length*100);
-  if(!s.o){
-    const att=store.get("cpv-att",{}); att[kind]=(att[kind]||0)+1; store.set("cpv-att",att);
-    s.o={a:att[kind],ts:Date.now(),d:Math.round((Date.now()-s.t0)/1000)};
-  }
-  const o=s.o, logo=$(".brand-id svg").outerHTML;
-  const msg = pct>=90?"Xuất sắc!":pct>=70?"Tốt lắm!":pct>=50?"Khá, cần ôn thêm.":"Cần ôn lại thẻ ghi nhớ.";
-  $("#view").innerHTML = `
-    <div class="shot-tip" id="tip"><span aria-hidden="true">📸</span><span>Em chụp màn hình phiếu dưới đây rồi gửi cô qua Zalo nhé.</span></div>
-    <div class="ticket" id="ticket">
-      <div class="ticket-h">${logo}<div><div class="tn">Ms Trâm English Hub</div><div class="tt">Phiếu kết quả · Career Paths &amp; Future Jobs</div></div></div>
-      <div class="ticket-b">
-        <div><div class="t-name">${esc(student.n)}</div><div class="t-class">Lớp ${esc(student.c)}</div></div>
-        <div class="t-score"><span class="big">${s.score}/${s.qs.length}</span><span class="pct">${pct}% · ${msg}</span></div>
-        <dl class="t-meta">
-          <dt>Phần</dt><dd>${MODE[kind]} · ${esc(scopeName(filter))}</dd>
-          <dt>Lần làm</dt><dd>Lần thứ ${o.a}</dd>
-          <dt>Nộp lúc</dt><dd>${fmtTime(o.ts)}</dd>
-          <dt>Làm trong</dt><dd>${fmtDur(o.d)}</dd>
-        </dl>
-        ${s.miss.length?`<div><div class="eyebrow" style="margin-bottom:6px">Từ làm sai (${s.miss.length})</div><div class="t-miss">${s.miss.map(x=>`<span>${esc(x.w)}</span>`).join("")}</div></div>`:`<div class="t-ok">Không sai từ nào 🎉</div>`}
-      </div>
-    </div>
-    ${s.miss.length?`<ul class="miss" style="max-width:440px;margin:0 auto">${s.miss.map(x=>`<li><b>${esc(x.w)}</b>: ${esc(x.vi)}</li>`).join("")}</ul>`:""}
-    <div class="row center"><button class="btn primary" id="again">Làm bộ câu mới</button>${s.miss.length?`<button class="btn" id="markReview">Ôn các từ sai bằng thẻ</button>`:""}</div>`;
-  try{$("#tip").scrollIntoView({block:"start"})}catch(e){}
-  $("#again").onclick=()=>{session=null;renderSession(kind)};
-  if(s.miss.length)$("#markReview").onclick=()=>{cardOrder=s.miss.map(x=>x.w);cardIdx=0;flipped=false;tab="cards";session=null;render()};
-}
-const renderQuiz=()=>renderSession("quiz");
-const renderGap=()=>renderSession("gap");
-
-/* ---------- list ---------- */
-let q="";
-function renderList(){
-  $("#view").innerHTML = `<input class="search" id="search" type="search" placeholder="Tìm từ tiếng Anh hoặc nghĩa tiếng Việt…" value="${esc(q)}">
-    <div class="list" id="items"></div>`;
-  const draw=()=>{
-    const t=q.trim().toLowerCase();
-    const P=pool().filter(x=>!t||x.w.includes(t)||x.vi.toLowerCase().includes(t));
-    $("#items").innerHTML = P.length?P.map(x=>`
-      <article class="item${known.has(x.w)?" is-known":""}">
-        <div class="item-h"><h3>${esc(x.w)}</h3><button class="tick" data-w="${esc(x.w)}" aria-pressed="${known.has(x.w)}">${known.has(x.w)?"✓ Đã thuộc":"Đã thuộc?"}</button></div>
-        <div class="row"><span class="tag">${esc(x.pos)}</span><span class="ipa">${esc(x.ipa)}</span><button class="icon-btn" data-say="${esc(x.w)}" aria-label="Nghe ${esc(x.w)}">🔊</button><span class="tag">Bài ${x.p}</span></div>
-        <div class="vi">${esc(x.vi)}</div>
-        ${x.syn||x.ant?`<div class="rel">${x.syn?`<span><b>ĐN</b>${esc(x.syn)}</span>`:""}${x.ant?`<span><b>TN</b>${esc(x.ant)}</span>`:""}</div>`:""}
-        <p class="ex" style="font-size:14px">${filled(x)}</p>
-      </article>`).join(""):`<div class="empty">Không tìm thấy từ nào khớp với “${esc(q)}”.</div>`;
-  };
-  draw();
-  $("#search").oninput=e=>{q=e.target.value;draw()};
-  $("#items").onclick=e=>{
-    const t=e.target.closest(".tick"); if(t){toggleKnown(t.dataset.w);draw();return}
-    const s=e.target.closest("[data-say]"); if(s)speak(s.dataset.say);
-  };
-}
-
-drawLadder(); drawChips(); render();
-</script>
-
+  <!-- JavaScript: Parser Markdown, Danh sách chủ đề & Logic ứng dụng -->
+  <script src="js/parser.js"></script>
+  <script src="data/topics/career.js"></script>
+  <script src="data/topics/environment.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
 </html>

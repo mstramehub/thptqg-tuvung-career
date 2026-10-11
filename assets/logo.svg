@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 84 60" role="img" aria-label="Logo Ms Trâm English Hub">
+  <g>
+    <polygon points="30,7 41,18 30,29 19,18" fill="#0C3A5E"/>
+    <polygon points="18,19 29,30 18,41 7,30" fill="#1B5F93"/>
+    <polygon points="30,31 41,42 30,53 19,42" fill="#1E78BC"/>
+    <polygon points="42,19 53,30 42,41 31,30" fill="#2D97DA"/>
+    <polygon points="54,7 65,18 54,29 43,18" fill="#33A9EC"/>
+    <polygon points="66,19 77,30 66,41 55,30" fill="#7CC9F3"/>
+    <polygon points="54,31 65,42 54,53 43,42" fill="#A6DBF7"/>
+  </g>
+</svg>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Teacher Vocab Studio · Ms Trâm English Hub</title>
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+
+  <!-- Cài đặt theme ban đầu không bị chớp màn hình (Mặc định: Tối) -->
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem("cpv-theme");
+        if (t) {
+          var parsed = JSON.parse(t);
+          if (parsed === "light") document.documentElement.setAttribute("data-theme", "light");
+          else document.documentElement.setAttribute("data-theme", "dark");
+        } else {
+          document.documentElement.setAttribute("data-theme", "dark");
+        }
+      } catch (e) {
+        document.documentElement.setAttribute("data-theme", "dark");
+      }
+    })();
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Be+Vietnam+Pro:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+
+  <link rel="stylesheet" href="css/studio.css">
+</head>
+<body>
+  <div class="studio-wrap">
+    <!-- Header -->
+    <header>
+      <a href="index.html" class="brand-link">
+        <svg viewBox="0 0 84 60" role="img" aria-label="Logo Ms Trâm English Hub">
+          <g>
+            <polygon points="30,7 41,18 30,29 19,18" fill="#0C3A5E"/>
+            <polygon points="18,19 29,30 18,41 7,30" fill="#1B5F93"/>
+            <polygon points="30,31 41,42 30,53 19,42" fill="#1E78BC"/>
+            <polygon points="42,19 53,30 42,41 31,30" fill="#2D97DA"/>
+            <polygon points="54,7 65,18 54,29 43,18" fill="#33A9EC"/>
+            <polygon points="66,19 77,30 66,41 55,30" fill="#7CC9F3"/>
+            <polygon points="54,31 65,42 54,53 43,42" fill="#A6DBF7"/>
+          </g>
+        </svg>
+        <div>
+          <div class="brand-title">Teacher Vocab Studio</div>
+          <div class="brand-tag">Công cụ tạo bộ từ vựng cho cô giáo từ Google Sheets / Excel</div>
+        </div>
+      </a>
+      <div class="nav-actions">
+        <button class="icon-toggle-btn" id="themeToggle" type="button" aria-label="Chuyển sang giao diện sáng" title="Giao diện tối (Bấm để chuyển sang sáng)">🌙</button>
+        <a href="index.html" class="btn-link">← Về trang học sinh</a>
+      </div>
+    </header>
+
+    <!-- Bước 1: Thông tin chuyên đề -->
+    <section class="card-box">
+      <div class="card-h">
+        <div>
+          <h2 class="card-title"><span class="step-num">1</span> Thông tin chuyên đề từ vựng</h2>
+          <p class="card-desc">Nhập tiêu đề và thông tin bài học để học sinh dễ dàng nhận diện chuyên đề.</p>
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label" for="topicTitle">Tên chuyên đề (Tiêu đề lớn) *</label>
+          <input class="form-input" id="topicTitle" placeholder="VD: People and Personal Life - Inspiring Stories" value="People and Personal Life - Inspiring Stories">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="topicId">Mã chuyên đề (Viết liền, không dấu) *</label>
+          <input class="form-input" id="topicId" placeholder="VD: people-life" value="people-life">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="topicEyebrow">Dòng phụ đề (Cấp độ & Đề thi)</label>
+          <input class="form-input" id="topicEyebrow" placeholder="VD: Biographies & Life Stories · B2 – C1 · Test 01" value="Biographies & Life Stories · B2 – C1 · Test 01">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="passagesCount">Số bài đọc dự kiến trong chuyên đề</label>
+          <input class="form-input" id="passagesCount" type="number" min="1" max="10" value="4">
+        </div>
+
+        <div class="form-group full">
+          <label class="form-label" for="topicDesc">Mô tả nội dung chuyên đề</label>
+          <input class="form-input" id="topicDesc" placeholder="VD: Từ vựng đọc hiểu nâng cao về tiểu sử, sự nghiệp và bài học cuộc sống." value="Từ vựng đọc hiểu nâng cao về tiểu sử, nhân vật truyền cảm hứng, sự nghiệp và bài học cuộc sống.">
+        </div>
+      </div>
+    </section>
+
+    <!-- Bước 2: Dán bảng dữ liệu -->
+    <section class="card-box">
+      <div class="card-h">
+        <div>
+          <h2 class="card-title"><span class="step-num">2</span> Dán bảng từ Google Sheets hoặc Excel</h2>
+          <p class="card-desc">Cô mở file Google Sheets / Excel, bôi đen toàn bộ bảng từ vựng (kèm hoặc không kèm dòng tiêu đề), nhấn Ctrl+C rồi dán vào đây.</p>
+        </div>
+        <button class="btn secondary" type="button" id="loadSampleBtn">📋 Thử dán mẫu Google Sheets cô Trâm</button>
+      </div>
+
+      <textarea class="paste-area" id="rawInput" placeholder="Dán các cột bảng từ Google Sheets hoặc Excel vào đây...
+Hệ thống tự động nhận diện thông minh các cột: Từ vựng, Phiên âm, PoS, Nghĩa tiếng Việt, Nghĩa tiếng Anh, Đồng nghĩa..."></textarea>
+
+      <div class="paste-bar">
+        <span style="font-size:13px;color:var(--muted)">💡 Mẹo: Hệ thống tự động phân loại cột thông minh, dù cô đảo thứ tự các cột vẫn hoạt động tốt!</span>
+        <button class="btn primary" type="button" id="parseBtn">🔍 Phân tích bảng dữ liệu</button>
+      </div>
+    </section>
+
+    <!-- Bước 3: Xác nhận cột & Xem trước -->
+    <section class="card-box" id="step3Box" style="display:none">
+      <div class="card-h">
+        <div>
+          <h2 class="card-title"><span class="step-num">3</span> Kiểm tra & Xác nhận các cột</h2>
+          <p class="card-desc">Hệ thống đã tự động đoán đúng loại cột. Nếu cần điều chỉnh, cô chỉ việc chọn lại ở menu thả xuống của cột đó.</p>
+        </div>
+        <span class="badge ok" id="rowCountBadge">0 dòng</span>
+      </div>
+
+      <div class="mapping-box">
+        <table class="mapping-tbl" id="mappingTable"></table>
+      </div>
+
+      <div style="display:flex;justify-content:flex-end">
+        <button class="btn success" type="button" id="generateBtn">✨ Tạo dữ liệu chuyên đề</button>
+      </div>
+    </section>
+
+    <!-- Bước 4: Xuất file & Hướng dẫn -->
+    <section class="card-box" id="step4Box" style="display:none">
+      <div class="card-h">
+        <div>
+          <h2 class="card-title"><span class="step-num">4</span> Xuất file hoàn tất & Sử dụng</h2>
+          <p class="card-desc">Bộ từ vựng đã sẵn sàng! Cô tải file về và đặt vào thư mục web.</p>
+        </div>
+        <span class="badge ok" id="genCountBadge">0 từ vựng</span>
+      </div>
+
+      <div class="output-box">
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn primary" type="button" id="downloadJsBtn">💾 Tải về file .js (Dùng cho Web)</button>
+          <button class="btn secondary" type="button" id="downloadMdBtn">📄 Tải về file .md (Lưu trữ Markdown)</button>
+          <button class="btn" type="button" id="copyCodeBtn">📋 Sao chép mã</button>
+        </div>
+
+        <pre class="code-view" id="outCode"></pre>
+
+        <div style="background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px">
+          <strong style="color:var(--accent)">📌 Hướng dẫn 2 bước cực nhanh cho cô giáo:</strong>
+          <ol class="guide-steps" style="margin-top:8px">
+            <li>Nhấn nút <b>"Tải về file .js"</b> ở trên và lưu file vào thư mục: <code>data/topics/</code> (ví dụ: <code>data/topics/people-life.js</code>).</li>
+            <li>Mở file <code>index.html</code>, thêm 1 dòng nạp file này ở cuối (cạnh dòng <code>career.js</code>):<br>
+            <code>&lt;script src="data/topics/people-life.js"&gt;&lt;/script&gt;</code></li>
+          </ol>
+          <p style="margin:8px 0 0;font-size:13.5px;color:var(--good);font-weight:600">🎉 Xong! Học sinh mở web lên là thấy chuyên đề mới ngay lập tức!</p>
+        </div>
+      </div>
+    </section>
+    <footer style="margin-top:28px;text-align:center;color:var(--muted);font-size:13.5px;padding-bottom:20px">
+      © <a href="https://www.facebook.com/mstramengclass" target="_blank" rel="noopener noreferrer" style="color:var(--ink);font-weight:600;text-decoration:none">Ms Trâm English Hub</a> · <a href="https://www.facebook.com/mstramengclass" target="_blank" rel="noopener noreferrer" style="color:var(--accent);font-weight:600;text-decoration:none">Facebook</a> · Tiếng Anh cho mọi lứa tuổi · <a href="index.html" style="color:var(--accent);text-decoration:none">Về trang học sinh</a>
+    </footer>
+  </div>
+
+  <script src="js/studio.js"></script>
+</body>
+</html>
