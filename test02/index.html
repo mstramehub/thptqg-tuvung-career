@@ -1,0 +1,528 @@
+<!doctype html>
+<html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Career Paths Vocabulary 02</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Be+Vietnam+Pro:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a study desk — header with a "career ladder" progress meter, passage filter chips, four study modes in one column */
+:root{
+  --bg:#F3F6F8; --surface:#FFFFFF; --sunk:#E6ECF1; --ink:#13243A; --muted:#5A6878; --line:#D2DCE5;
+  --accent:#1569A8; --accent-ink:#FFFFFF; --hi:#F2B54A; --hi-soft:#FCEBC8;
+  --good:#2C7A4B; --good-soft:#DDF0E3; --bad:#B9402B; --bad-soft:#F8E0DA;
+  --display:"Bricolage Grotesque","Be Vietnam Pro",system-ui,sans-serif;
+  --body:"Be Vietnam Pro",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  --r:14px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0D1520; --surface:#15212E; --sunk:#1C2A38; --ink:#E3ECF4; --muted:#93A4B5; --line:#2A3A4A;
+  --accent:#5DB4EC; --accent-ink:#0A1824; --hi:#F0BA5C; --hi-soft:#3A2F1A;
+  --good:#6CC892; --good-soft:#1B3527; --bad:#EE8A75; --bad-soft:#3D2420; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0D1520; --surface:#15212E; --sunk:#1C2A38; --ink:#E3ECF4; --muted:#93A4B5; --line:#2A3A4A;
+  --accent:#5DB4EC; --accent-ink:#0A1824; --hi:#F0BA5C; --hi-soft:#3A2F1A;
+  --good:#6CC892; --good-soft:#1B3527; --bad:#EE8A75; --bad-soft:#3D2420; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55}
+.wrap{max-width:880px;margin:0 auto;padding-inline:16px;padding-block:28px 56px;display:flex;flex-direction:column;gap:22px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+header{display:grid;gap:14px}
+header h1{font-size:clamp(30px,6vw,46px);font-weight:800;line-height:1.05;letter-spacing:-.02em}
+header h1 span{color:var(--accent)}
+.sub{color:var(--muted);max-width:62ch;margin:0}
+.ladder{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.rungs{display:flex;gap:2px;flex:1;min-width:200px}
+.rung{flex:1;height:14px;border-radius:3px;background:var(--sunk);border:1px solid var(--line);transition:background .3s}
+.rung.on{background:var(--accent);border-color:var(--accent)}
+.ladder-label{font-family:var(--mono);font-size:13px;font-variant-numeric:tabular-nums;color:var(--muted);white-space:nowrap}
+.ladder-label b{color:var(--ink)}
+.controls{display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;align-items:center}
+.chips,.tabs{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:500 13px var(--body);padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.tabs{background:var(--sunk);padding:4px;border-radius:12px}
+.tab{font:600 14px var(--body);padding:8px 14px;border:0;border-radius:9px;background:transparent;color:var(--muted);cursor:pointer}
+.tab[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgb(0 0 0 / .12)}
+button:focus-visible,input:focus-visible,.card:focus-visible{outline:3px solid var(--hi);outline-offset:2px}
+.panel{display:flex;flex-direction:column;gap:16px}
+.btn{font:600 14px var(--body);padding:10px 16px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.known{background:var(--good-soft);border-color:var(--good);color:var(--good)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.row.center{justify-content:center}
+.tag{font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;padding:2px 8px;border-radius:6px;background:var(--sunk);color:var(--muted)}
+.ipa{font-family:var(--mono);color:var(--muted);font-size:14px}
+mark{background:var(--hi-soft);color:var(--ink);padding:0 3px;border-radius:4px;font-weight:600;box-shadow:inset 0 -2px 0 var(--hi)}
+/* flashcard */
+.stage{perspective:1200px}
+.card{position:relative;height:330px;cursor:pointer;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+.card.flip{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:24px;display:flex;flex-direction:column;gap:10px;overflow:auto}
+.face.back{transform:rotateY(180deg)}
+.front{justify-content:center;align-items:center;text-align:center}
+.front .word{font-family:var(--display);font-weight:800;font-size:clamp(34px,8vw,56px);letter-spacing:-.02em;line-height:1.05}
+.hint{position:absolute;bottom:12px;left:0;right:0;text-align:center;font-size:12px;color:var(--muted)}
+.back .vi{font-family:var(--display);font-size:24px;font-weight:700}
+.en{color:var(--muted);font-size:15px;margin:0}
+.exlabel{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-right:6px;font-style:normal}
+.rel{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:14px}
+.rel b{font-family:var(--mono);font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:500;margin-right:4px}
+.ex{border-left:3px solid var(--hi);padding-left:12px;margin:4px 0 0;font-style:italic}
+.counter{font-family:var(--mono);font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+/* quiz */
+.q{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:22px;display:flex;flex-direction:column;gap:14px}
+.q-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.bar{height:6px;background:var(--sunk);border-radius:6px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);transition:width .3s}
+.prompt{font-family:var(--display);font-size:22px;font-weight:700;line-height:1.3}
+.prompt.sent{font-family:var(--body);font-size:18px;font-weight:500;font-style:italic}
+.blank{display:inline-block;min-width:90px;border-bottom:2px solid var(--hi);text-align:center;font-style:normal;font-weight:700}
+.opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+@media (max-width:560px){.opts{grid-template-columns:1fr}}
+.opt{text-align:left;font:500 15px var(--body);padding:12px 14px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer;display:flex;gap:10px;align-items:baseline}
+.opt .k{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt:disabled{cursor:default}
+.opt.right{background:var(--good-soft);border-color:var(--good)}
+.opt.wrong{background:var(--bad-soft);border-color:var(--bad)}
+.fb{padding:12px 14px;border-radius:10px;background:var(--sunk);font-size:14.5px}
+.fb strong.ok{color:var(--good)} .fb strong.no{color:var(--bad)}
+.score{text-align:center;display:flex;flex-direction:column;gap:10px;align-items:center}
+.score .big{font-family:var(--display);font-size:64px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+.miss{text-align:left;width:100%;display:grid;gap:6px;margin:0;padding:0;list-style:none}
+.miss li{padding:8px 12px;border-radius:8px;background:var(--bad-soft);font-size:14px}
+/* list */
+.search{font:15px var(--body);padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);width:100%}
+.list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media (max-width:640px){.list{grid-template-columns:1fr}}
+.item{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.item.is-known{border-color:var(--good)}
+.item-h{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.item-h h3{font-size:20px;font-weight:700}
+.item .vi{font-weight:600}
+.tick{font:600 12px var(--body);padding:4px 10px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--muted);cursor:pointer;white-space:nowrap}
+.tick[aria-pressed="true"]{background:var(--good-soft);border-color:var(--good);color:var(--good)}
+.icon-btn{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:8px;padding:4px 8px;cursor:pointer;font:500 12px var(--mono)}
+.empty{color:var(--muted);text-align:center;padding:24px}
+footer{color:var(--muted);font-size:13px;text-align:center}
+.brand{display:flex;align-items:center;justify-content:space-between;gap:12px 20px;flex-wrap:wrap;padding-bottom:16px;border-bottom:2px solid var(--ink)}
+.brand-id{display:flex;align-items:center;gap:12px;color:var(--ink);text-decoration:none}
+.brand-id svg{width:58px;height:auto;flex:none}
+.brand-name{font-family:var(--display);font-weight:800;font-size:20px;line-height:1.1}
+.brand-tag{font-size:13px;color:var(--muted)}
+.hotline{display:flex;flex-direction:column;align-items:flex-end;gap:2px;font-size:13px;color:var(--muted)}
+.hotline a{font-family:var(--mono);font-weight:500;font-size:15px;color:var(--accent);text-decoration:none;font-variant-numeric:tabular-nums}
+.hotline a:hover{text-decoration:underline}
+@media (max-width:560px){.hotline{align-items:flex-start}}
+
+.form{display:grid;gap:14px;max-width:440px}
+.field{display:grid;gap:5px}
+.field label{font-size:13px;font-weight:600;color:var(--muted)}
+.field input{font:15px var(--body);padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);width:100%}
+.err{color:var(--bad);font-size:13.5px;margin:0}
+.who{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;font-size:14px;color:var(--muted)}
+.who b{color:var(--ink)}
+.linkbtn{background:none;border:0;padding:0;color:var(--accent);font:600 13px var(--body);cursor:pointer;text-decoration:underline}
+.result{border:2px dashed var(--accent);border-radius:12px;padding:16px;text-align:left;width:100%;display:grid;gap:6px;background:var(--bg);font-size:14.5px}
+.code{font-family:var(--mono);font-size:12.5px;word-break:break-all;background:var(--sunk);padding:8px 10px;border-radius:8px}
+.msgbox{width:100%;min-height:150px;font:13px var(--mono);padding:10px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+.paste{width:100%;min-height:170px;font:13.5px var(--body);padding:12px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:14px;font-variant-numeric:tabular-nums}
+th,td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
+th{font-family:var(--mono);font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:500;background:var(--sunk)}
+td.wrap{white-space:normal;min-width:180px}
+tr:last-child td{border-bottom:0}
+.pill{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px;font-weight:600}
+.pill.ok{background:var(--good-soft);color:var(--good)} .pill.no{background:var(--bad-soft);color:var(--bad)}
+.stats{display:flex;flex-wrap:wrap;gap:8px 20px;font-size:14px;color:var(--muted)}
+.stats b{color:var(--ink);font-family:var(--display);font-size:20px;margin-right:4px}
+
+.ticket{width:100%;max-width:440px;margin:0 auto;background:var(--surface);border:2px solid var(--accent);border-radius:16px;overflow:hidden;text-align:left}
+.ticket-h{display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--sunk);border-bottom:1px solid var(--line)}
+.ticket-h svg{width:42px;height:auto;flex:none}
+.ticket-h .tn{font-family:var(--display);font-weight:800;font-size:16px;line-height:1.15}
+.ticket-h .tt{font-size:12px;color:var(--muted)}
+.ticket-b{padding:16px;display:grid;gap:12px}
+.t-name{font-family:var(--display);font-weight:800;font-size:22px;line-height:1.2}
+.t-class{color:var(--muted);font-size:14px}
+.t-score{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.t-score .big{font-family:var(--display);font-size:58px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums;color:var(--accent)}
+.t-score .pct{font-weight:600}
+.t-meta{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 12px;font-size:14px;margin:0}
+.t-meta dt{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding-top:3px}
+.t-meta dd{margin:0;font-variant-numeric:tabular-nums}
+.t-miss{display:flex;flex-wrap:wrap;gap:6px}
+.t-miss span{font-size:13px;padding:3px 9px;border-radius:999px;background:var(--bad-soft);color:var(--ink)}
+.t-ok{font-size:14px;color:var(--good);font-weight:600}
+.shot-tip{display:flex;gap:10px;align-items:center;max-width:440px;margin:0 auto;padding:10px 14px;border-radius:10px;background:var(--hi-soft);font-size:14px;font-weight:500}
+.contact{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px 20px;align-items:center}
+.contact svg{width:72px;height:auto}
+.contact dl{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 14px;font-size:14.5px}
+.contact dt{font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding-top:3px}
+.contact dd{margin:0}
+.contact a{color:var(--accent);font-weight:600;text-decoration:none}
+@media (max-width:480px){.contact{grid-template-columns:1fr}}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <div class="brand-id"><svg viewBox="0 0 84 60" role="img" aria-label="Logo Ms Trâm English Hub"><g>
+<polygon points="30,7 41,18 30,29 19,18" fill="#0C3A5E"/><polygon points="18,19 29,30 18,41 7,30" fill="#1B5F93"/>
+<polygon points="30,31 41,42 30,53 19,42" fill="#1E78BC"/><polygon points="42,19 53,30 42,41 31,30" fill="#2D97DA"/>
+<polygon points="54,7 65,18 54,29 43,18" fill="#33A9EC"/><polygon points="66,19 77,30 66,41 55,30" fill="#7CC9F3"/>
+<polygon points="54,31 65,42 54,53 43,42" fill="#A6DBF7"/></g></svg>
+        <div><div class="brand-name">Ms Trâm English Hub</div><div class="brand-tag">Tiếng Anh cho mọi lứa tuổi</div></div>
+      </div>
+      <div class="hotline"><span>Hotline / Zalo</span><a href="tel:0792951529">079 29 51 529</a><a href="tel:0898123696">0898 123 696</a></div>
+    </div>
+    <div class="eyebrow">Vocabulary Bank · B2 – C1 · Practice Test 02</div>
+    <h1>Career Paths <span>&amp;</span> Future Jobs</h1>
+    <p class="sub">70 từ vựng B2 – C1 trích từ 4 bài đọc của Test 02, chia 6 nhóm: việc làm, kỹ năng và đào tạo, tuyển dụng, ngôn ngữ học thuật, cụm động từ, thành ngữ. Mỗi từ có phiên âm Anh – Anh, nghĩa tiếng Anh, nghĩa tiếng Việt và câu ví dụ.</p>
+    <div class="ladder" aria-label="Tiến độ học">
+      <div class="rungs" id="rungs"></div>
+      <div class="ladder-label">Nấc thang đã leo: <b id="knownN">0</b>/<span id="totalN">0</span> từ</div>
+    </div>
+  </header>
+
+  <div class="controls">
+    <div class="chips" id="chips" role="group" aria-label="Lọc theo nhóm từ"></div>
+    <div class="tabs" role="tablist" id="tabs">
+      <button class="tab" role="tab" data-tab="cards" id="tab-cards">Thẻ ghi nhớ</button>
+      <button class="tab" role="tab" data-tab="quiz" id="tab-quiz">Trắc nghiệm</button>
+      <button class="tab" role="tab" data-tab="gap" id="tab-gap">Điền từ</button>
+      <button class="tab" role="tab" data-tab="list" id="tab-list">Danh sách</button>
+    </div>
+  </div>
+
+  <main id="view" class="panel"></main>
+
+  <section class="contact" aria-label="Thông tin liên hệ">
+    <svg viewBox="0 0 84 60" role="img" aria-hidden="true"><g>
+<polygon points="30,7 41,18 30,29 19,18" fill="#0C3A5E"/><polygon points="18,19 29,30 18,41 7,30" fill="#1B5F93"/>
+<polygon points="30,31 41,42 30,53 19,42" fill="#1E78BC"/><polygon points="42,19 53,30 42,41 31,30" fill="#2D97DA"/>
+<polygon points="54,7 65,18 54,29 43,18" fill="#33A9EC"/><polygon points="66,19 77,30 66,41 55,30" fill="#7CC9F3"/>
+<polygon points="54,31 65,42 54,53 43,42" fill="#A6DBF7"/></g></svg>
+    <div>
+      <h2 style="font-size:20px;margin-bottom:10px">Ms Trâm English Hub</h2>
+      <dl>
+        <dt>Địa chỉ</dt><dd>12 Lê Đình Chinh – Quy Nhơn Nam</dd>
+        <dt>Zalo / HP</dt><dd><a href="tel:0792951529">079 29 51 529</a> &nbsp;–&nbsp; <a href="tel:0898123696">0898 123 696</a></dd>
+        <dt>Lớp học</dt><dd>Luyện thi THPTQG / ĐGNL Tiếng Anh · Đọc hiểu nâng cao theo chủ đề</dd>
+      </dl>
+    </div>
+  </section>
+  <footer>© Ms Trâm English Hub · Tiếng Anh cho mọi lứa tuổi · <a href="https://mstramehub.github.io/thptqg-tuvung-career/" style="color:var(--accent)">Ôn bộ từ vựng Test 01</a></footer>
+</div>
+
+<script>
+const W = [
+ {"w": "displace", "ipa": "/dɪsˈpleɪs/", "pos": "v", "en": "to take the place of somebody or something, forcing them out", "vi": "thay thế, làm mất chỗ", "p": 1, "ex": "Automation is expected to ___ millions of workers in routine jobs.", "form": "displace", "syn": "replace"},
+ {"w": "clerical", "ipa": "/ˈklerɪkl/", "pos": "adj", "en": "connected with office work such as keeping records and filing", "vi": "(thuộc) văn thư, hành chính", "p": 1, "ex": "Many ___ tasks, such as data entry and filing records, are now done by software.", "form": "clerical", "syn": "administrative"},
+ {"w": "occupation", "ipa": "/ˌɒkjuˈpeɪʃn/", "pos": "n", "en": "a job or profession", "vi": "nghề nghiệp", "p": 1, "ex": "Nursing is one of the fastest-growing ___ in an ageing society.", "form": "occupations", "syn": "profession"},
+ {"w": "white-collar", "ipa": "/ˌwaɪt ˈkɒlə(r)/", "pos": "adj", "en": "connected with work done in an office rather than physical work", "vi": "(thuộc) công việc văn phòng", "p": 1, "ex": "AI now threatens ___ professions such as accounting and law, not just factory work.", "form": "white-collar", "syn": "office-based", "ant": "blue-collar"},
+ {"w": "tradesperson", "ipa": "/ˈtreɪdzpɜːsn/", "pos": "n", "en": "a skilled manual worker such as a plumber or electrician", "vi": "thợ lành nghề", "p": 1, "ex": "A skilled ___ such as an electrician can earn more than many graduates.", "form": "tradesperson", "syn": "craftsperson"},
+ {"w": "vacancy", "ipa": "/ˈveɪkənsi/", "pos": "n", "en": "a job that is available for somebody to do", "vi": "vị trí còn trống", "p": 1, "ex": "The company has three ___ for software engineers.", "form": "vacancies", "syn": "opening"},
+ {"w": "headcount", "ipa": "/ˈhedkaʊnt/", "pos": "n", "en": "the number of people employed by an organisation", "vi": "số lượng nhân sự", "p": 1, "ex": "The firm plans to reduce its ___ by 10 per cent next year.", "form": "headcount", "syn": "staff numbers"},
+ {"w": "demographic shift", "ipa": "/ˌdeməˈɡræfɪk ˈʃɪft/", "pos": "n", "en": "a change in the structure of a population, e.g. in age", "vi": "biến đổi nhân khẩu học", "p": 1, "ex": "A major ___ is under way as birth rates fall and people live longer.", "form": "demographic shift"},
+ {"w": "ageing population", "ipa": "/ˌeɪdʒɪŋ ˌpɒpjuˈleɪʃn/", "pos": "n", "en": "a population in which the proportion of older people is growing", "vi": "dân số già hoá", "p": 1, "ex": "Japan's ___ has created a huge demand for care workers.", "form": "ageing population"},
+ {"w": "geoeconomic", "ipa": "/ˌdʒiːəʊˌiːkəˈnɒmɪk/", "pos": "adj", "en": "relating to the effect of geography and politics on economics", "vi": "(thuộc) địa kinh tế", "p": 1, "ex": "Trade wars and other ___ tensions are reshaping global supply chains.", "form": "geoeconomic"},
+ {"w": "fragmentation", "ipa": "/ˌfræɡmenˈteɪʃn/", "pos": "n", "en": "the process of breaking into separate parts", "vi": "sự phân mảnh", "p": 1, "ex": "The ___ of global trade into rival blocs could slow job growth.", "form": "fragmentation"},
+ {"w": "tenure", "ipa": "/ˈtenjə(r)/", "pos": "n", "en": "the period of time a person stays in a job", "vi": "thời gian gắn bó (với công việc)", "p": 1, "ex": "The average job ___ among young workers is now less than three years.", "form": "tenure", "syn": "length of service"},
+ {"w": "median", "ipa": "/ˈmiːdiən/", "pos": "adj", "en": "having a value in the middle of a series of values", "vi": "(giá trị) trung vị", "p": 1, "ex": "The ___ salary for graduates in this field is £30,000.", "form": "median"},
+ {"w": "core skill", "ipa": "/ˈkɔː skɪl/", "pos": "n", "en": "a basic skill that is essential for doing a job well", "vi": "kỹ năng cốt lõi", "p": 2, "ex": "Analytical thinking is considered a ___ by most employers.", "form": "core skill"},
+ {"w": "upskill", "ipa": "/ˈʌpskɪl/", "pos": "v", "en": "to teach workers additional skills", "vi": "nâng cao kỹ năng", "p": 2, "ex": "Companies must ___ their staff so that they can use the new software.", "form": "upskill", "syn": "train"},
+ {"w": "retrain", "ipa": "/ˌriːˈtreɪn/", "pos": "v", "en": "to learn or teach new skills, especially for a different job", "vi": "đào tạo lại, học lại nghề", "p": 2, "ex": "After the factory closed, many workers had to ___ as electricians.", "form": "retrain", "syn": "reskill"},
+ {"w": "transferable", "ipa": "/trænsˈfɜːrəbl/", "pos": "adj", "en": "(of skills) able to be used in different jobs or situations", "vi": "có thể chuyển đổi", "p": 2, "ex": "Communication is a ___ skill that is useful in almost any job.", "form": "transferable", "syn": "portable", "ant": "job-specific"},
+ {"w": "technological literacy", "ipa": "/ˌteknəˌlɒdʒɪkl ˈlɪtərəsi/", "pos": "n", "en": "the ability to understand and use technology effectively", "vi": "hiểu biết về công nghệ", "p": 2, "ex": "Basic ___ is now expected in nearly every workplace.", "form": "technological literacy", "syn": "digital literacy"},
+ {"w": "resilience", "ipa": "/rɪˈzɪliəns/", "pos": "n", "en": "the ability to recover quickly from difficulties", "vi": "khả năng phục hồi, sự bền bỉ", "p": 2, "ex": "Employers value ___: the ability to bounce back after setbacks.", "form": "resilience", "syn": "toughness", "ant": "fragility"},
+ {"w": "credentials", "ipa": "/krəˈdenʃlz/", "pos": "n", "en": "qualifications or achievements that show you are suitable for something", "vi": "bằng cấp, chứng chỉ", "p": 2, "ex": "She had impressive academic ___ but little practical experience.", "form": "credentials", "syn": "qualifications"},
+ {"w": "bachelor's degree", "ipa": "/ˌbætʃələz dɪˈɡriː/", "pos": "n", "en": "a first university degree, usually taking three or four years", "vi": "bằng cử nhân", "p": 2, "ex": "Many employers no longer require a ___ for entry-level roles.", "form": "bachelor's degree"},
+ {"w": "apprenticeship", "ipa": "/əˈprentɪʃɪp/", "pos": "n", "en": "a period of training with an employer while learning a skill", "vi": "chương trình học nghề", "p": 2, "ex": "He chose an ___ in engineering instead of going to university.", "form": "apprenticeship"},
+ {"w": "vocational", "ipa": "/vəʊˈkeɪʃənl/", "pos": "adj", "en": "connected with the skills needed for a particular job", "vi": "(thuộc) dạy nghề, hướng nghiệp", "p": 2, "ex": "Students can take ___ courses that prepare them for trades such as plumbing.", "form": "vocational", "ant": "academic"},
+ {"w": "enrolment", "ipa": "/ɪnˈrəʊlmənt/", "pos": "n", "en": "the number of people officially registered on a course", "vi": "số lượng đăng ký học", "p": 2, "ex": "University ___ in computer science fell sharply this year.", "form": "enrolment", "syn": "registration"},
+ {"w": "on-the-job training", "ipa": "/ˌɒn ðə ˌdʒɒb ˈtreɪnɪŋ/", "pos": "n", "en": "training given while a person is doing a job", "vi": "đào tạo tại chỗ", "p": 2, "ex": "New staff receive six months of ___ before they work alone.", "form": "on-the-job training"},
+ {"w": "dexterity", "ipa": "/dekˈsterəti/", "pos": "n", "en": "skill in using your hands", "vi": "sự khéo léo (đôi tay)", "p": 2, "ex": "Surgeons and electricians need excellent manual ___.", "form": "dexterity", "syn": "nimbleness", "ant": "clumsiness"},
+ {"w": "degree requirement", "ipa": "/dɪˈɡriː rɪˌkwaɪəmənt/", "pos": "n", "en": "a rule that applicants must have a university degree", "vi": "yêu cầu bằng cấp", "p": 3, "ex": "Several big firms have dropped the ___ for many of their jobs.", "form": "degree requirement"},
+ {"w": "paper ceiling", "ipa": "/ˈpeɪpə ˌsiːlɪŋ/", "pos": "n", "en": "an invisible barrier that excludes workers without degrees", "vi": "\"trần giấy\" (rào cản bằng cấp)", "p": 3, "ex": "Workers without a degree often hit a ___ that blocks their promotion.", "form": "paper ceiling"},
+ {"w": "hiring manager", "ipa": "/ˈhaɪərɪŋ ˌmænɪdʒə(r)/", "pos": "n", "en": "the person who decides who will be employed for a role", "vi": "nhà quản lý tuyển dụng", "p": 3, "ex": "The ___ asked every candidate to complete a short task.", "form": "hiring manager"},
+ {"w": "work sample", "ipa": "/ˈwɜːk ˌsɑːmpl/", "pos": "n", "en": "an example of a candidate's work used to judge their skills", "vi": "sản phẩm công việc mẫu", "p": 3, "ex": "Instead of checking degrees, the company asks applicants to submit a ___.", "form": "work sample"},
+ {"w": "structured interview", "ipa": "/ˌstrʌktʃəd ˈɪntəvjuː/", "pos": "n", "en": "an interview in which every candidate is asked the same questions", "vi": "phỏng vấn có cấu trúc", "p": 3, "ex": "In a ___, every candidate answers exactly the same questions.", "form": "structured interview"},
+ {"w": "assess", "ipa": "/əˈses/", "pos": "v", "en": "to judge the quality or ability of somebody or something", "vi": "đánh giá", "p": 3, "ex": "Employers increasingly ___ candidates on what they can do, not where they studied.", "form": "assess", "syn": "evaluate"},
+ {"w": "retain", "ipa": "/rɪˈteɪn/", "pos": "v", "en": "to keep somebody, especially an employee, from leaving", "vi": "giữ chân", "p": 3, "ex": "Flexible working helps companies ___ talented staff.", "form": "retain", "syn": "keep", "ant": "lose"},
+ {"w": "public sector", "ipa": "/ˌpʌblɪk ˈsektə(r)/", "pos": "n", "en": "the part of the economy run or funded by the government", "vi": "khu vực công", "p": 3, "ex": "Many graduates choose the ___ for its job security.", "form": "public sector", "ant": "private sector"},
+ {"w": "intriguingly", "ipa": "/ɪnˈtriːɡɪŋli/", "pos": "adv", "en": "in a way that is interesting because it is unusual", "vi": "điều thú vị là", "p": 4, "ex": "The fastest growth, ___, is not in tech jobs but in care work.", "form": "intriguingly", "syn": "interestingly"},
+ {"w": "revealing", "ipa": "/rɪˈviːlɪŋ/", "pos": "adj", "en": "giving interesting information that was not known before", "vi": "đáng chú ý, cho thấy nhiều điều", "p": 4, "ex": "The survey offers a ___ picture of how young people view their careers.", "form": "revealing", "syn": "illuminating"},
+ {"w": "equivalent (to)", "ipa": "/ɪˈkwɪvələnt/", "pos": "adj", "en": "equal in value, amount or meaning", "vi": "tương đương", "p": 4, "ex": "Some firms now treat a three-year apprenticeship as ___ to a degree.", "form": "equivalent", "syn": "equal", "ant": "different"},
+ {"w": "tension", "ipa": "/ˈtenʃn/", "pos": "n", "en": "a situation in which different needs or forces pull against each other", "vi": "sự giằng co, căng thẳng", "p": 4, "ex": "There is a ___ between employers' need for flexibility and workers' desire for security.", "form": "tension", "syn": "conflict", "ant": "harmony"},
+ {"w": "notable", "ipa": "/ˈnəʊtəbl/", "pos": "adj", "en": "deserving to be noticed because it is important or unusual", "vi": "đáng chú ý", "p": 4, "ex": "One ___ exception is healthcare, where demand keeps rising.", "form": "notable", "syn": "remarkable", "ant": "insignificant"},
+ {"w": "considerable", "ipa": "/kənˈsɪdərəbl/", "pos": "adj", "en": "great in amount, size or importance", "vi": "đáng kể", "p": 4, "ex": "Retraining requires a ___ investment of time and money.", "form": "considerable", "syn": "substantial", "ant": "negligible"},
+ {"w": "hierarchy", "ipa": "/ˈhaɪərɑːki/", "pos": "n", "en": "a system in which things are arranged by importance", "vi": "thứ bậc", "p": 4, "ex": "In many countries, a university degree sits at the top of the ___ of qualifications.", "form": "hierarchy"},
+ {"w": "fallback", "ipa": "/ˈfɔːlbæk/", "pos": "n", "en": "something you use when your first choice is not available", "vi": "phương án dự phòng", "p": 4, "ex": "For many students, vocational training is seen as a ___ rather than a first choice.", "form": "fallback", "syn": "backup"},
+ {"w": "stigma", "ipa": "/ˈstɪɡmə/", "pos": "n", "en": "feelings of disapproval that people have about something", "vi": "sự kỳ thị, định kiến", "p": 4, "ex": "In some families, there is still a ___ attached to not going to university.", "form": "stigma", "syn": "disgrace"},
+ {"w": "plentiful", "ipa": "/ˈplentɪfl/", "pos": "adj", "en": "available in large amounts", "vi": "dồi dào", "p": 4, "ex": "Jobs are ___ in healthcare but scarce in manufacturing.", "form": "plentiful", "syn": "abundant", "ant": "scarce"},
+ {"w": "deliberate", "ipa": "/dɪˈlɪbərət/", "pos": "adj", "en": "done on purpose after careful thought", "vi": "có chủ đích", "p": 4, "ex": "Switching careers should be a ___ decision, not a sudden one.", "form": "deliberate", "syn": "intentional", "ant": "accidental"},
+ {"w": "idealise", "ipa": "/aɪˈdiːəlaɪz/", "pos": "v", "en": "to consider somebody or something as perfect", "vi": "lý tưởng hoá", "p": 4, "ex": "Young people tend to ___ jobs in tech and overlook the long working hours.", "form": "idealise", "syn": "romanticise"},
+ {"w": "accumulate", "ipa": "/əˈkjuːmjəleɪt/", "pos": "v", "en": "to gradually get more of something over time", "vi": "tích luỹ", "p": 4, "ex": "Workers who change roles often ___ a wide range of skills over the years.", "form": "accumulate", "syn": "build up"},
+ {"w": "metaphor", "ipa": "/ˈmetəfə(r)/", "pos": "n", "en": "a word or image used to represent something else", "vi": "phép ẩn dụ, hình ảnh ẩn dụ", "p": 4, "ex": "The \"career ladder\" is a ___ for moving up step by step.", "form": "metaphor"},
+ {"w": "implication", "ipa": "/ˌɪmplɪˈkeɪʃn/", "pos": "n", "en": "a possible effect or result of something", "vi": "hàm ý, hệ quả", "p": 4, "ex": "The report has serious ___ for school-leavers choosing a career.", "form": "implications", "syn": "consequence"},
+ {"w": "reassuring", "ipa": "/ˌriːəˈʃʊərɪŋ/", "pos": "adj", "en": "making you feel less worried", "vi": "đáng an tâm", "p": 4, "ex": "It is ___ that most workers will keep their jobs despite automation.", "form": "reassuring", "syn": "comforting", "ant": "alarming"},
+ {"w": "screen out", "ipa": "/skriːn ˈaʊt/", "pos": "phr v", "en": "to remove people who are not suitable after checking them", "vi": "sàng lọc, loại ra", "p": 5, "ex": "Strict degree requirements ___ many capable applicants.", "form": "screen out", "syn": "filter out"},
+ {"w": "move around", "ipa": "/muːv əˈraʊnd/", "pos": "phr v", "en": "to change jobs or places frequently", "vi": "chuyển chỗ, đổi việc liên tục", "p": 5, "ex": "Young professionals tend to ___ between companies more than their parents did.", "form": "move around"},
+ {"w": "be raised on", "ipa": "/bi ˈreɪzd ɒn/", "pos": "phr v", "en": "to grow up being taught or influenced by something", "vi": "lớn lên cùng (tư tưởng, thói quen)", "p": 5, "ex": "Many of today's workers ___ the idea that a degree guarantees success.", "form": "were raised on"},
+ {"w": "catch up with", "ipa": "/kætʃ ˈʌp wɪð/", "pos": "phr v", "en": "to reach the same level as somebody who was ahead", "vi": "bắt kịp", "p": 5, "ex": "Women's pay has yet to ___ men's pay in many industries.", "form": "catch up with"},
+ {"w": "keep pace with", "ipa": "/kiːp ˈpeɪs wɪð/", "pos": "phr v", "en": "to change or develop at the same speed as something", "vi": "theo kịp", "p": 5, "ex": "Training programmes must ___ rapid changes in technology.", "form": "keep pace with", "syn": "keep up with"},
+ {"w": "make the grade", "ipa": "/ˌmeɪk ðə ˈɡreɪd/", "pos": "idiom", "en": "to reach the necessary standard", "vi": "đạt chuẩn", "p": 6, "ex": "Only a few applicants ___ in the final round of interviews.", "form": "made the grade", "syn": "meet the standard", "ant": "fall short"},
+ {"w": "be left behind", "ipa": "/bi ˌleft bɪˈhaɪnd/", "pos": "idiom", "en": "to fail to keep up with other people", "vi": "bị bỏ lại phía sau", "p": 6, "ex": "Workers who refuse to learn new skills risk ___.", "form": "being left behind", "syn": "fall behind"},
+ {"w": "it remains to be seen", "ipa": "/ɪt rɪˌmeɪnz tə bi ˈsiːn/", "pos": "idiom", "en": "it is not yet known or certain", "vi": "vẫn còn phải chờ xem", "p": 6, "ex": "Experts are optimistic, but ___ whether AI will create more jobs than it destroys.", "form": "it remains to be seen"},
+ {"w": "earn while you learn", "ipa": "/ˌɜːn waɪl ju ˈlɜːn/", "pos": "idiom", "en": "to be paid while being trained", "vi": "vừa học vừa kiếm tiền", "p": 6, "ex": "Apprenticeships let young people ___, getting paid during their training.", "form": "earn while you learn"},
+ {"w": "not entirely rosy", "ipa": "/nɒt ɪnˌtaɪəli ˈrəʊzi/", "pos": "idiom", "en": "not completely positive or hopeful", "vi": "không hoàn toàn tươi sáng", "p": 6, "ex": "The job outlook is ___: wages are rising, but so is competition.", "form": "not entirely rosy"},
+ {"w": "a consolation prize", "ipa": "/ə ˌkɒnsəˈleɪʃn praɪz/", "pos": "idiom", "en": "something given to a person who has not got what they really wanted", "vi": "giải khuyến khích, lựa chọn thứ yếu", "p": 6, "ex": "Vocational training should not be seen as ___ for students who missed out on university.", "form": "a consolation prize"},
+ {"w": "a passing headline", "ipa": "/ə ˌpɑːsɪŋ ˈhedlaɪn/", "pos": "idiom", "en": "a news story that attracts attention only for a short time", "vi": "dòng tít nhất thời", "p": 6, "ex": "The skills gap is not just ___; it will shape the labour market for decades.", "form": "a passing headline"},
+ {"w": "more myth than reality", "ipa": "/ˌmɔː ˈmɪθ ðən riˈæləti/", "pos": "idiom", "en": "more an idea people believe than an actual fact", "vi": "huyền thoại nhiều hơn thực tế", "p": 6, "ex": "For most young people, the idea of a job for life is now ___.", "form": "more myth than reality"},
+ {"w": "a life sentence", "ipa": "/ə ˈlaɪf ˌsentəns/", "pos": "idiom", "en": "a situation that you cannot escape from for the rest of your life", "vi": "bản án chung thân, tình thế không lối thoát", "p": 6, "ex": "A poor first job does not have to be ___ for your career.", "form": "a life sentence"},
+ {"w": "across the political spectrum", "ipa": "/əˌkrɒs ðə pəˌlɪtɪkl ˈspektrəm/", "pos": "idiom", "en": "among people with all kinds of political views", "vi": "thuộc mọi khuynh hướng chính trị", "p": 6, "ex": "Support for apprenticeships comes from politicians ___.", "form": "across the political spectrum"},
+ {"w": "gone with the wind", "ipa": "/ˌɡɒn wɪð ðə ˈwɪnd/", "pos": "idiom", "en": "disappeared completely", "vi": "tan biến, biến mất hoàn toàn", "p": 6, "ex": "The days of staying with one company for 40 years are ___.", "form": "gone with the wind", "syn": "vanished"},
+ {"w": "a storm in a teacup", "ipa": "/ə ˌstɔːm ɪn ə ˈtiːkʌp/", "pos": "idiom", "en": "a lot of anger or worry about something unimportant", "vi": "chuyện bé xé ra to", "p": 6, "ex": "Some experts think the panic about robots is ___, while others take it seriously.", "form": "a storm in a teacup", "syn": "a fuss about nothing"},
+ {"w": "worth one's weight in gold", "ipa": "/ˌwɜːθ wʌnz ˌweɪt ɪn ˈɡəʊld/", "pos": "idiom", "en": "extremely useful or valuable", "vi": "vô cùng quý giá", "p": 6, "ex": "A good mentor is ___ for a young professional.", "form": "worth their weight in gold", "syn": "invaluable", "ant": "worthless"},
+ {"w": "a closed book", "ipa": "/ə ˌkləʊzd ˈbʊk/", "pos": "idiom", "en": "a subject you know nothing about; something no longer open", "vi": "điều bí ẩn; chuyện đã khép lại", "p": 6, "ex": "For many parents, careers in data science remain ___.", "form": "a closed book"},
+ {"w": "riding high", "ipa": "/ˌraɪdɪŋ ˈhaɪ/", "pos": "idiom", "en": "being very successful or popular", "vi": "đang thành công rực rỡ", "p": 6, "ex": "After its successful product launch, the start-up was ___.", "form": "riding high", "syn": "flourishing", "ant": "struggling"}
+];
+const PASS = {1:"Việc làm & thị trường lao động",2:"Kỹ năng, giáo dục & đào tạo",3:"Tuyển dụng",4:"Ngôn ngữ học thuật",5:"Cụm động từ",6:"Thành ngữ & cụm cố định"};
+const SHORT = {1:"Việc làm",2:"Kỹ năng & đào tạo",3:"Tuyển dụng",4:"Học thuật",5:"Cụm động từ",6:"Thành ngữ"};
+
+/* ---------- state ---------- */
+const store = {
+  get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},
+  set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+};
+const known = new Set(store.get("cpv2-known",[]));
+let filter = "all", tab = store.get("cpv2-tab","cards");
+let cardOrder = null, cardIdx = 0, flipped = false;
+let session = null; // quiz or gap session
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const shuffle = a => {a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const pool = () => filter==="all" ? W : W.filter(x=>x.p===+filter);
+const filled = x => esc(x.ex).replace("___",`<mark>${esc(x.form)}</mark>`);
+const posGroup = p => (p==="v"||p==="phr v") ? "v" : p;
+const filledEx = x => `<span class="exlabel">Ví dụ</span>${filled(x)}`;
+
+function speak(t){try{const u=new SpeechSynthesisUtterance(t);u.lang="en-GB";u.rate=.9;speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}}
+function toggleKnown(w){known.has(w)?known.delete(w):known.add(w);store.set("cpv2-known",[...known]);drawLadder()}
+
+function drawLadder(){
+  $("#rungs").innerHTML = W.map(x=>`<div class="rung${known.has(x.w)?" on":""}" title="${esc(x.w)}"></div>`).join("");
+  $("#knownN").textContent = known.size; $("#totalN").textContent = W.length;
+}
+function drawChips(){
+  const opts=[["all","Tất cả"],...Object.entries(SHORT)];
+  $("#chips").innerHTML = opts.map(([v,l])=>`<button class="chip" data-f="${v}" aria-pressed="${filter===v}" title="${v==="all"?"":esc(PASS[v])}">${l}</button>`).join("");
+}
+$("#chips").addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;filter=b.dataset.f;cardOrder=null;cardIdx=0;session=null;drawChips();render()});
+$("#tabs").addEventListener("click",e=>{const b=e.target.closest(".tab");if(!b)return;tab=b.dataset.tab;store.set("cpv2-tab",tab);session=null;render()});
+if(!["cards","quiz","gap","list"].includes(tab))tab="cards";
+
+function render(){
+  document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected",t.dataset.tab===tab));
+  ({cards:renderCards,quiz:renderQuiz,gap:renderGap,list:renderList})[tab]();
+}
+
+/* ---------- flashcards ---------- */
+function renderCards(){
+  const P = pool();
+  if(!cardOrder) cardOrder = P.map(x=>x.w);
+  const x = W.find(y=>y.w===cardOrder[cardIdx]);
+  const rel = [x.syn&&`<span><b>Đồng nghĩa</b>${esc(x.syn)}</span>`, x.ant&&`<span><b>Trái nghĩa</b>${esc(x.ant)}</span>`].filter(Boolean).join("");
+  $("#view").innerHTML = `
+   <div class="row" style="justify-content:space-between">
+     <span class="counter">Thẻ ${cardIdx+1} / ${cardOrder.length}</span>
+     <div class="row"><button class="btn" id="shuf">Trộn thẻ</button><button class="btn" id="say">🔊 Nghe</button></div>
+   </div>
+   <div class="stage"><div class="card${flipped?" flip":""}" id="card" tabindex="0" role="button" aria-label="Lật thẻ">
+     <div class="face front">
+       <div class="row center"><span class="tag">${esc(x.pos)}</span><span class="tag">${esc(PASS[x.p])}</span></div>
+       <div class="word">${esc(x.w)}</div>
+       <div class="ipa">${esc(x.ipa)}</div>
+       <div class="hint">Chạm hoặc nhấn Space để lật</div>
+     </div>
+     <div class="face back">
+       <div class="row"><span class="tag">${esc(x.w)}</span><span class="ipa">${esc(x.ipa)}</span></div>
+       <div class="vi">${esc(x.vi)}</div>
+       <p class="en">${esc(x.en)}</p>
+       ${rel?`<div class="rel">${rel}</div>`:""}
+       <p class="ex">${filledEx(x)}</p>
+     </div>
+   </div></div>
+   <div class="row center">
+     <button class="btn" id="prev">← Trước</button>
+     <button class="btn ${known.has(x.w)?"known":""}" id="know">${known.has(x.w)?"✓ Đã thuộc":"Đánh dấu đã thuộc"}</button>
+     <button class="btn primary" id="next">Tiếp →</button>
+   </div>`;
+  const go = d => {cardIdx=(cardIdx+d+cardOrder.length)%cardOrder.length;flipped=false;renderCards()};
+  $("#card").onclick = () => {flipped=!flipped;$("#card").classList.toggle("flip",flipped)};
+  $("#prev").onclick = () => go(-1); $("#next").onclick = () => go(1);
+  $("#know").onclick = () => {toggleKnown(x.w);renderCards()};
+  $("#say").onclick = () => speak(x.w);
+  $("#shuf").onclick = () => {cardOrder=shuffle(cardOrder);cardIdx=0;flipped=false;renderCards()};
+}
+document.addEventListener("keydown",e=>{
+  if(tab!=="cards"||e.target.tagName==="INPUT")return;
+  if(e.key===" "){e.preventDefault();$("#card")?.click()}
+  if(e.key==="ArrowRight")$("#next")?.click();
+  if(e.key==="ArrowLeft")$("#prev")?.click();
+});
+
+/* ---------- question builders ---------- */
+function pick(arr,n,exclude){return shuffle([...new Set(arr)].filter(v=>v&&!exclude.includes(v))).slice(0,n)}
+/* words that mean the same thing, so they never appear as a "wrong" option next to each other */
+const CLUSTERS=[["clerical","white-collar","administrative","office-based"],["demographic shift","ageing population"],["upskill","retrain","train","reskill"],["technological literacy","core skill","digital literacy"],["notable","revealing","remarkable","illuminating"],["considerable","plentiful","substantial","abundant"],["fallback","a consolation prize","backup"],["catch up with","keep pace with","keep up with"],["be left behind","fall behind","fall short"],["gone with the wind","more myth than reality","a storm in a teacup","a passing headline","vanished","a fuss about nothing"],["occupation","profession","tradesperson","craftsperson"],["intriguingly","interestingly"],["implication","consequence"],["tension","conflict"]];
+const kin = w => CLUSTERS.filter(c=>c.includes(w)).flat();
+function quizQ(x){
+  const others = W.filter(y=>y.w!==x.w && !kin(x.w).includes(y.w));
+  const types = ["meaning","reverse","def","def"]; if(x.syn)types.push("syn"); if(x.ant)types.push("ant","ant");
+  const t = types[Math.floor(Math.random()*types.length)];
+  const sameW = () => {let d=pick(others.filter(y=>posGroup(y.pos)===posGroup(x.pos)).map(y=>y.w),3,[x.w]); if(d.length<3) d=d.concat(pick(others.map(y=>y.w),3-d.length,[x.w,...d])); return d};
+  if(t==="meaning") return {x,label:"Nghĩa của từ",prompt:`“${x.w}” nghĩa là gì?`,ans:x.vi,opts:[x.vi,...pick(others.map(y=>y.vi),3,[x.vi])]};
+  if(t==="reverse") return {x,label:"Chọn từ",prompt:`Từ nào có nghĩa “${x.vi}”?`,ans:x.w,opts:[x.w,...sameW()]};
+  if(t==="def") return {x,label:"Định nghĩa tiếng Anh",prompt:`Which word means: “${x.en}”?`,ans:x.w,opts:[x.w,...sameW()]};
+  const relPool = others.flatMap(y=>[y.syn,y.ant]).filter(Boolean);
+  if(t==="syn") return {x,label:"Đồng nghĩa",prompt:`Từ ĐỒNG NGHĨA với “${x.w}”`,ans:x.syn,opts:[x.syn,...pick(relPool,3,[x.w,x.syn,x.ant,...kin(x.w),...kin(x.syn)])]};
+  const ex2=[x.w,x.ant,x.syn,...kin(x.ant)];
+  const d = x.syn ? [x.syn,...pick(relPool,2,ex2)] : pick(relPool,3,ex2);
+  return {x,label:"Trái nghĩa",prompt:`Từ TRÁI NGHĨA với “${x.w}”`,ans:x.ant,opts:[x.ant,...d]};
+}
+function gapQ(x){
+  const ok = y => y.w!==x.w && !kin(x.w).includes(y.w);
+  const same = W.filter(y=>ok(y) && posGroup(y.pos)===posGroup(x.pos)).map(y=>y.form);
+  const any = W.filter(ok).map(y=>y.form);
+  let d = x.dist ? [...x.dist] : pick(same,3,[x.form]); if(d.length<3) d=d.concat(pick(any,3-d.length,[x.form,...d]));
+  return {x,label:"Điền từ vào chỗ trống",gap:true,prompt:esc(x.ex).replace("___",'<span class="blank">______</span>'),ans:x.form,opts:[x.form,...d]};
+}
+function newSession(kind){
+  const P = shuffle(pool()).slice(0,10);
+  return {kind,qs:P.map(x=>{const q=kind==="quiz"?quizQ(x):gapQ(x);q.opts=shuffle(q.opts);return q}),i:0,score:0,picked:null,miss:[],t0:Date.now()};
+}
+
+function renderSession(kind){
+  if(!student) return studentForm(kind);
+  if(!session||session.kind!==kind) session=newSession(kind);
+  const s=session;
+  if(s.i>=s.qs.length) return renderScore(kind);
+  const q=s.qs[s.i], done=s.picked!==null;
+  const letters="ABCD";
+  $("#view").innerHTML = whoBar() + `
+   <div class="q">
+     <div class="q-top"><span class="eyebrow">${q.label} · ${esc(SHORT[q.x.p])}</span><span class="counter">Câu ${s.i+1}/${s.qs.length} · Đúng ${s.score}</span></div>
+     <div class="bar"><i style="width:${(s.i/s.qs.length)*100}%"></i></div>
+     <div class="prompt${q.gap?" sent":""}">${q.gap?q.prompt:esc(q.prompt)}</div>
+     <div class="opts">${q.opts.map((o,i)=>{
+        let c=""; if(done){ if(o===q.ans)c="right"; else if(o===s.picked)c="wrong"; }
+        return `<button class="opt ${c}" data-o="${esc(o)}" ${done?"disabled":""}><span class="k">${letters[i]}</span><span>${esc(o)}</span></button>`}).join("")}</div>
+     ${done?`<div class="fb"><strong class="${s.picked===q.ans?"ok":"no"}">${s.picked===q.ans?"Chính xác!":"Chưa đúng."}</strong>
+        <b>${esc(q.x.w)}</b> <span class="ipa">${esc(q.x.ipa)}</span> (${esc(q.x.pos)}): ${esc(q.x.vi)} · <i>${esc(q.x.en)}</i>${q.x.syn?` · ĐN: ${esc(q.x.syn)}`:""}${q.x.ant?` · TN: ${esc(q.x.ant)}`:""}
+        <p class="ex">${filledEx(q.x)}</p></div>
+        <div class="row" style="justify-content:flex-end"><button class="btn primary" id="nextQ">${s.i+1<s.qs.length?"Câu tiếp →":"Xem kết quả"}</button></div>`:""}
+   </div>`;
+  document.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{
+    s.picked=b.dataset.o; if(s.picked===q.ans)s.score++; else s.miss.push(q.x); renderSession(kind);
+  });
+  if(done)$("#nextQ").onclick=()=>{s.i++;s.picked=null;renderSession(kind)};
+}
+/* ---------- student identity & result codes ---------- */
+let student = store.get("cpv-student",null);
+const MODE = {quiz:"Trắc nghiệm",gap:"Điền từ"};
+const scopeName = f => f==="all"?"Tất cả 6 nhóm":"Nhóm "+f+" – "+PASS[f];
+function whoBar(){
+  return `<div class="who">Học sinh: <b>${esc(student.n)}</b> · Lớp <b>${esc(student.c)}</b><button class="linkbtn" id="chg">Đổi tên</button></div>`;
+}
+document.addEventListener("click",e=>{if(e.target.id==="chg"){student=null;store.set("cpv-student",null);session=null;render()}});
+function studentForm(kind){
+  $("#view").innerHTML = `<div class="q form" id="sf">
+    <div><span class="eyebrow">${MODE[kind]} · Bước 1</span><h2 style="font-size:22px;margin-top:4px">Nhập thông tin trước khi làm bài</h2></div>
+    <p style="margin:0;color:var(--muted);font-size:14.5px">Làm xong 10 câu, em chụp màn hình phiếu kết quả rồi gửi cô qua Zalo.</p>
+    <div class="field"><label for="sn">Họ và tên</label><input id="sn" autocomplete="name" placeholder="VD: Nguyễn Thị Lan" maxlength="40"></div>
+    <div class="field"><label for="sc">Lớp</label><input id="sc" placeholder="VD: 12A1" maxlength="15"></div>
+    <p class="err" id="se" hidden>Em nhập đầy đủ họ tên và lớp nhé.</p>
+    <div><button class="btn primary" type="button" id="startBtn">Bắt đầu làm bài</button></div>
+  </div>`;
+  try{$("#sn").focus({preventScroll:true})}catch(e){}
+  const start=()=>{
+    const n=$("#sn").value.trim().replace(/\s+/g," "), c=$("#sc").value.trim().toUpperCase();
+    if(n.length<2||!c){$("#se").hidden=false;(n.length<2?$("#sn"):$("#sc")).focus();return}
+    student={n,c};store.set("cpv-student",student);session=null;renderSession(kind);
+  };
+  $("#startBtn").addEventListener("click",start);
+  ["#sn","#sc"].forEach(id=>$(id).addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();start()}}));
+}
+const fmtTime = ts => new Date(ts).toLocaleString("vi-VN",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"});
+const fmtDur = d => `${Math.floor(d/60)} phút ${d%60} giây`;
+function renderScore(kind){
+  const s=session, pct=Math.round(s.score/s.qs.length*100);
+  if(!s.o){
+    const att=store.get("cpv2-att",{}); att[kind]=(att[kind]||0)+1; store.set("cpv2-att",att);
+    s.o={a:att[kind],ts:Date.now(),d:Math.round((Date.now()-s.t0)/1000)};
+  }
+  const o=s.o, logo=$(".brand-id svg").outerHTML;
+  const msg = pct>=90?"Xuất sắc!":pct>=70?"Tốt lắm!":pct>=50?"Khá, cần ôn thêm.":"Cần ôn lại thẻ ghi nhớ.";
+  $("#view").innerHTML = `
+    <div class="shot-tip" id="tip"><span aria-hidden="true">📸</span><span>Em chụp màn hình phiếu dưới đây rồi gửi cô qua Zalo nhé.</span></div>
+    <div class="ticket" id="ticket">
+      <div class="ticket-h">${logo}<div><div class="tn">Ms Trâm English Hub</div><div class="tt">Phiếu kết quả · Career Paths · Test 02</div></div></div>
+      <div class="ticket-b">
+        <div><div class="t-name">${esc(student.n)}</div><div class="t-class">Lớp ${esc(student.c)}</div></div>
+        <div class="t-score"><span class="big">${s.score}/${s.qs.length}</span><span class="pct">${pct}% · ${msg}</span></div>
+        <dl class="t-meta">
+          <dt>Phần</dt><dd>${MODE[kind]} · ${esc(scopeName(filter))}</dd>
+          <dt>Lần làm</dt><dd>Lần thứ ${o.a}</dd>
+          <dt>Nộp lúc</dt><dd>${fmtTime(o.ts)}</dd>
+          <dt>Làm trong</dt><dd>${fmtDur(o.d)}</dd>
+        </dl>
+        ${s.miss.length?`<div><div class="eyebrow" style="margin-bottom:6px">Từ làm sai (${s.miss.length})</div><div class="t-miss">${s.miss.map(x=>`<span>${esc(x.w)}</span>`).join("")}</div></div>`:`<div class="t-ok">Không sai từ nào 🎉</div>`}
+      </div>
+    </div>
+    ${s.miss.length?`<ul class="miss" style="max-width:440px;margin:0 auto">${s.miss.map(x=>`<li><b>${esc(x.w)}</b>: ${esc(x.vi)}</li>`).join("")}</ul>`:""}
+    <div class="row center"><button class="btn primary" id="again">Làm bộ câu mới</button>${s.miss.length?`<button class="btn" id="markReview">Ôn các từ sai bằng thẻ</button>`:""}</div>`;
+  try{$("#tip").scrollIntoView({block:"start"})}catch(e){}
+  $("#again").onclick=()=>{session=null;renderSession(kind)};
+  if(s.miss.length)$("#markReview").onclick=()=>{cardOrder=s.miss.map(x=>x.w);cardIdx=0;flipped=false;tab="cards";session=null;render()};
+}
+const renderQuiz=()=>renderSession("quiz");
+const renderGap=()=>renderSession("gap");
+
+/* ---------- list ---------- */
+let q="";
+function renderList(){
+  $("#view").innerHTML = `<input class="search" id="search" type="search" placeholder="Tìm từ tiếng Anh hoặc nghĩa tiếng Việt…" value="${esc(q)}">
+    <div class="list" id="items"></div>`;
+  const draw=()=>{
+    const t=q.trim().toLowerCase();
+    const P=pool().filter(x=>!t||x.w.includes(t)||x.vi.toLowerCase().includes(t)||x.en.toLowerCase().includes(t));
+    $("#items").innerHTML = P.length?P.map(x=>`
+      <article class="item${known.has(x.w)?" is-known":""}">
+        <div class="item-h"><h3>${esc(x.w)}</h3><button class="tick" data-w="${esc(x.w)}" aria-pressed="${known.has(x.w)}">${known.has(x.w)?"✓ Đã thuộc":"Đã thuộc?"}</button></div>
+        <div class="row"><span class="tag">${esc(x.pos)}</span><span class="ipa">${esc(x.ipa)}</span><button class="icon-btn" data-say="${esc(x.w)}" aria-label="Nghe ${esc(x.w)}">🔊</button><span class="tag">${esc(SHORT[x.p])}</span></div>
+        <div class="vi">${esc(x.vi)}</div>
+        <p class="en" style="font-size:14px">${esc(x.en)}</p>
+        ${x.syn||x.ant?`<div class="rel">${x.syn?`<span><b>ĐN</b>${esc(x.syn)}</span>`:""}${x.ant?`<span><b>TN</b>${esc(x.ant)}</span>`:""}</div>`:""}
+        <p class="ex" style="font-size:14px">${filledEx(x)}</p>
+      </article>`).join(""):`<div class="empty">Không tìm thấy từ nào khớp với “${esc(q)}”.</div>`;
+  };
+  draw();
+  $("#search").oninput=e=>{q=e.target.value;draw()};
+  $("#items").onclick=e=>{
+    const t=e.target.closest(".tick"); if(t){toggleKnown(t.dataset.w);draw();return}
+    const s=e.target.closest("[data-say]"); if(s)speak(s.dataset.say);
+  };
+}
+
+drawLadder(); drawChips(); render();
+</script>
+
+</html>
